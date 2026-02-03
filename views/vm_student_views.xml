@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- List (Tree) view -->
+        <record id="view_vm_student_tree" model="ir.ui.view">
+            <field name="name">vm_student.tree</field>
+            <field name="model">vm.student</field>
+            <field name="arch" type="xml">
+                <list string="Students" create="true" edit="true" delete="true">
+                    <field name="name"/>
+                    <field name="name_arabic"/>
+                    <field name="stage_id"/>
+                    <field name="id_number"/>
+                    <field name="nationality"/>
+                    <field name="birth_date"/>
+                    <field name="gender"/>
+                    <field name="partner_id"/>
+                    <field name="user_id"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form view -->
+        <record id="view_vm_student_form" model="ir.ui.view">
+            <field name="name">vm_student.form</field>
+            <field name="model">vm.student</field>
+            <field name="arch" type="xml">
+                <form string="Student">
+                    <header>
+                    </header>
+                    <sheet>
+                     <div name="button_box" class="oe_button_box">
+                        </div>
+                        <field name="active" invisible="1"/>
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
+                                invisible ="active == True"/>
+
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" placeholder="Full name English"/>
+                                <field name="name_arabic" placeholder="Full name Arabic"/>
+                            </h1>
+
+                        </div>
+
+                         <div class="row flex-column flex-sm-row align-items-center">
+                            <div class="o_employee_avatar ms-2 p-0 h-100 mw-25 align-self-start align-self-sm-center">
+                                <field name="image_1920" widget='image' class="m-0" options='{"size": [128,158], "zoom": true, "preview_image":"avatar_128"}'/>
+                            </div>
+                            <div class="align-self-start o_employee_form_header_info">
+                                <div class="oe_title ps-0 pe-2 mw-100">
+                                    <h5 class="d-flex align-items-baseline mb-0">
+<!--                                        <field name="title" options="{'no_create': True}" placeholder="Title"/>-->
+                                    </h5>
+
+                                    <div class="d-flex align-items-baseline w-md-50">
+                                        <i class="fa fa-fw me-1 fa-envelope text-primary" title="Email"/>
+                                        <field name="email" class="w-100" widget="email" placeholder="Email"/>
+                                    </div>
+                                    <div class="d-flex align-items-baseline w-md-50">
+                                        <i class="fa fa-fw me-1 fa-phone text-primary" title="Phone"/>
+                                        <field name="phone" class="w-100" widget="phone" placeholder="Phone"/>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+
+
+                        <group>
+                            <group>
+                                  <field name="place_of_birth"/>
+                                    <field name="gender"/>
+                                    <field name="religion"/>
+                                    <field name="transportation"/>
+
+                            </group>
+                            <group>
+                                <field name="id_number"/>
+                                <field name="nationality"/>
+                                <field name="birth_date"/>
+                                <field name="age_on_october"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Personal">
+                                <group>
+
+
+
+                                <field name="stage_id"/>
+                                <field name="partner_id"/>
+                                <field name="user_id"/>
+                                </group>
+                            </page>
+                            <page string="Address &amp; Notes">
+                                <group>
+                                    <field name="detailed_address" colspan="2"/>
+                                </group>
+                            </page>
+                            <page string="Status">
+                                <group>
+                                    <field name="is_enrolled_student" readonly="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+
+                        <chatter/>
+>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Search view -->
+        <record id="view_vm_student_search" model="ir.ui.view">
+            <field name="name">vm_student_search</field>
+            <field name="model">vm.student</field>
+            <field name="arch" type="xml">
+                <search string="Students">
+                    <field name="name"/>
+<!--                    <field name="id_number"/>-->
+<!--                    <field name="stage_id"/>-->
+<!--                    <field name="nationality"/>-->
+<!--                    <field name="gender"/>-->
+<!--                    <field name="user_id"/>-->
+
+<!--                    <filter string="Active" name="filter_active" domain="[('active', '=', True)]"/>-->
+<!--                    <filter string="Enrolled" name="filter_enrolled" domain="[('is_enrolled_student', '=', True)]"/>-->
+
+<!--                    <group expand="0" string="Group By">-->
+<!--                        <filter string="Stage" domain="[]" context="{'group_by':'stage_id'}"/>-->
+<!--                        <filter string="Nationality" domain="[]" context="{'group_by':'nationality'}"/>-->
+<!--                        <filter string="Gender" domain="[]" context="{'group_by':'gender'}"/>-->
+<!--                    </group>-->
+                </search>
+            </field>
+        </record>
+
+        <!-- Action and Menu -->
+        <record id="action_vm_student" model="ir.actions.act_window">
+            <field name="name">Students</field>
+            <field name="res_model">vm.student</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_vm_student_tree"/>
+            <field name="domain">[("is_enrolled_student","=",True)]</field>
+        </record>
+
+        <record id="action_vm_application_student" model="ir.actions.act_window">
+            <field name="name">Students Application</field>
+            <field name="res_model">vm.student</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_vm_student_tree"/>
+            <field name="domain">[("is_enrolled_student","=",False)]</field>
+        </record>
+
+        <menuitem id="menu_vm_students" name="Students" parent="virgin_mary_school_menu" action="action_vm_student" sequence="10"/>
+        <menuitem id="menu_vm_students_applications" name="Applications" parent="virgin_mary_school_menu" action="action_vm_application_student" sequence="20"/>
+    </data>
+</odoo>
