@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <menuitem name="Virgin Mary School" id="virgin_mary_school_menu" sequence="10" web_icon="virgin_mary_school,static/description/logo_1.jpg"/>
+        <menuitem name="Configuration" id="configuration_menu" parent="virgin_mary_school_menu" sequence="100"/>
+
+
+        <menuitem name="Stages" id="student_stages" parent="configuration_menu" action="student_stages_act_window"/>
+        <menuitem name="Grades" id="student_grades" parent="configuration_menu" action="student_grade_act_window"/>
+
+            <menuitem id="menu_vm_academic_settings" name="Academic Settings" parent="configuration_menu" sequence="30"/>
+            <menuitem id="academic_year_menu"
+                  name="Academic year"
+                  action="academic_year_action"
+                  parent="menu_vm_academic_settings"
+                  sequence="10"/>
+
+        <menuitem id="menu_vm_students" name="Students" parent="virgin_mary_school_menu" action="action_vm_student"
+                  sequence="10"/>
+        <menuitem id="menu_vm_students_applications" name="Applications" parent="virgin_mary_school_menu"
+                  action="action_vm_application_student" sequence="20"/>
+
+
+        <menuitem id="parent_relationship_menu"
+                  name="Parent"
+
+                  parent="configuration_menu"
+                  sequence="20"/>
+
+            <menuitem id="parent_relationship_submenu"
+                  name="Relationships"
+                  action="act_vm_parent_relationship_view"
+                  parent="parent_relationship_menu"
+                  sequence="10"/>
+
+        <menuitem id="parent_menu"
+                  name="Parents"
+                  parent="virgin_mary_school_menu"
+                  sequence="30"/>
+        <menuitem id="parent_view_menu"
+                  name="Parent view"
+                    parent="parent_menu"
+
+                  action="parent_view_action"
+                  sequence="10"/>
+    </data>
+</odoo>

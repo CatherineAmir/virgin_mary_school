@@ -1,3 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_student_stages,access_student_stages,model_student_stages,,1,1,1,1
 access_vm_student,access_vm_student,model_vm_student,,1,1,1,1
+access_vm_student_grade,access_vm_student_grade,model_vm_student_grade,,1,1,1,1
+access_vm_academic_year,access_vm_academic_year,model_vm_academic_year,,1,1,1,1
+access_vm_parent_relationship,access_vm_parent_relationship.model_vm_parent_relationship,model_vm_parent_relationship,,1,1,1,1
+access_vm_parent,access_vm_parent,model_vm_parent,,1,1,1,1

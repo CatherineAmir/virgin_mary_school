@@ -31,6 +31,15 @@
                     </header>
                     <sheet>
                      <div name="button_box" class="oe_button_box">
+                            <button name="get_parent"
+                        class="btn oe_stat_button"
+                        icon="fa-user-o"
+                        type="object">
+
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Parents</span>
+                        </div>
+                    </button>
                         </div>
                         <field name="active" invisible="1"/>
                         <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
@@ -93,7 +102,7 @@
 
 
                                 <field name="stage_id"/>
-                                <field name="partner_id"/>
+                                <field name="partner_id" required="0"/>
                                 <field name="user_id"/>
                                 </group>
                             </page>
@@ -158,7 +167,6 @@
             <field name="domain">[("is_enrolled_student","=",False)]</field>
         </record>
 
-        <menuitem id="menu_vm_students" name="Students" parent="virgin_mary_school_menu" action="action_vm_student" sequence="10"/>
-        <menuitem id="menu_vm_students_applications" name="Applications" parent="virgin_mary_school_menu" action="action_vm_application_student" sequence="20"/>
+
     </data>
 </odoo>

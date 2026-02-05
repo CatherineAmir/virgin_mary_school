@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View -->
+
+    <record id="academic_year_view_form" model="ir.ui.view">
+        <field name="name">academic.year.view.form</field>
+        <field name="model">vm.academic.year</field>
+        <field name="arch" type="xml">
+            <form string="Academic_year">
+                <sheet>
+                    <group>
+
+                        <label string="Academic Year Details" for="name" class="oe_title"/>
+                                <h1>
+                                    <field name="name" placeholder="Academic Year Name"/>
+                                </h1>
+
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="current_year" widget="boolean_toggle"/>
+                <field name="admission_open" widget="boolean_toggle"/>
+                        <field name="medical_survey_id"/>
+                    </group>
+
+                <notebook>
+                    <page string="New Page">
+                        <field name="required_documents"/>
+                        <!-- Page content goes here -->
+                    </page>
+                    <page string="Parent Contact Confirmation">
+                        <field name="parent_contact_confirmation"/>
+                        <!-- Page content goes here -->
+                    </page>
+                </notebook>
+                 </sheet>
+
+                <!-- Add your fields here -->
+            </form>
+        </field>
+    </record>
+
+    
+    <!-- List View -->
+    <record id="academic_year_view_list" model="ir.ui.view">
+        <field name="name">academic.year.view.list</field>
+        <field name="model">vm.academic.year</field>
+        <field name="arch" type="xml">
+            <list string="Academic_year">
+                <field name="name"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="current_year" widget="boolean_toggle"/>
+                <field name="admission_open" widget="boolean_toggle"/>
+                <field name="medical_survey_id"/>
+                <!-- Add your fields here -->
+            </list>
+        </field>
+    </record>
+    
+    <!-- Action -->
+    <record id="academic_year_action" model="ir.actions.act_window">
+        <field name="name">Academic year</field>
+        <field name="res_model">vm.academic.year</field>
+        <field name="view_mode">list,form</field>
+
+    </record>
+    
+    <!-- Menu -->
+
+</odoo>
