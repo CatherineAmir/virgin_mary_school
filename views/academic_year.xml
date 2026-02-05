@@ -15,11 +15,12 @@
                                     <field name="name" placeholder="Academic Year Name"/>
                                 </h1>
 
-                <field name="start_date"/>
+                <field name="start_date" widget="date"/>
                 <field name="end_date"/>
                 <field name="current_year" widget="boolean_toggle"/>
                 <field name="admission_open" widget="boolean_toggle"/>
                         <field name="medical_survey_id"/>
+                        <field name="date_required_for_application"/>
                     </group>
 
                 <notebook>
@@ -52,6 +53,7 @@
                 <field name="current_year" widget="boolean_toggle"/>
                 <field name="admission_open" widget="boolean_toggle"/>
                 <field name="medical_survey_id"/>
+                <field name="date_required_for_application"/>
                 <!-- Add your fields here -->
             </list>
         </field>

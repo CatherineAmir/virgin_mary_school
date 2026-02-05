@@ -11,7 +11,7 @@
     'company': 'SITA-EGYPT',
     'maintainer': 'SITA-EGYPT',
     'website': 'https://sita-eg.com',
-    'depends': ['base', 'mail', 'website', 'survey','contacts'],
+    'depends': ['base', 'mail', 'website', 'survey', 'contacts'],
     'data': [
         'security/ir.model.access.csv',
         'views/student_stage_view.xml',
@@ -21,6 +21,7 @@
         "views/parent_relationship_view.xml",
         'views/res_partner.xml',
         'views/parent_view.xml',
+        'views/res_company.xml',
         "views/menus.xml",
 
     ],

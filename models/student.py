@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from dateutil.relativedelta import relativedelta
 
 
 class VmStudent(models.Model):
@@ -8,27 +9,44 @@ class VmStudent(models.Model):
     _inherits = {"res.partner": "partner_id"}
 
 
-    name = fields.Char()
+    # name = fields.Char()
+
     name_arabic = fields.Char()
     birth_date = fields.Date('Birth Date')
-    age_on_october = fields.Date('Age on October 2026')
+    age_on_october = fields.Char('Age on October',compute='_compute_age_on_october')
     place_of_birth = fields.Char(string="Place of Birth")
     id_number = fields.Char("Student National ID")
     nationality = fields.Many2one('res.country', 'Nationality')
 
     number_of_brothers = fields.Integer('Number of Brothers')
     number_of_sisters=fields.Integer('Number of Sisters')
+    current_academic_year=fields.Many2one('vm.academic.year', 'Current Academic Year')
+    date_required=fields.Date('Required for Application',related='current_academic_year.date_required_for_application')
+    age_year=fields.Integer('Age Year',compute='_compute_age_on_october',store=True,compute_sudo=True)
+    age_month=fields.Integer('Age Month',compute='_compute_age_on_october',store=True,compute_sudo=True)
+    age_day=fields.Integer('Age day',compute='_compute_age_on_october',store=True,compute_sudo=True)
+
+
+    @api.depends('birth_date',"date_required")
+    def _compute_age_on_october(self):
+        for r in self:
+            if r.date_required and r.birth_date:
+                diff=relativedelta(r.date_required,r.birth_date)
+                r.age_year = diff.years
+                r.age_month = diff.months
+                r.age_day = diff.days
+                r.age_on_october = f"{diff.years} years, {diff.months} months, {diff.days} days"
+            else:
+                r.age_on_october = ""
 
     def _compute_stage_id(self):
-        for student in self:
-            if not student.stage_id:
-                stage = self.env['student.stages'].search([], order="sequence,id", limit=1)
-                if stage:
-                    return stage.id
+        stage = self.env['student.stages'].search([], order="sequence,id", limit=1)
+        if stage:
+            return stage.id
 
 
 
-    stage_id = fields.Many2one('student.stages', string='Student Stage', default=_compute_stage_id, store=True,
+    stage_id = fields.Many2one('student.stages', string='Student Stage', default=_compute_stage_id,
                                index=True, tracking=True, copy=False, ondelete='restrict', )
 
 
@@ -43,14 +61,14 @@ class VmStudent(models.Model):
         ('muslim', 'Muslim'),
         ('christian', 'Christian'),
 
-    ], 'Gender', required=True, default='christian')
+    ], 'Religion', required=True, default='christian')
 
     detailed_address = fields.Char('Detailed Address in Arabic')
 
     transportation = fields.Selection([('Bus', "bus"), ("Other", "other")], string='Transportation')
 
     partner_id = fields.Many2one('res.partner', 'Partner',
-                                 required=True, ondelete="cascade")
+                                 required=True, ondelete="cascade", delegate=True)
     user_id = fields.Many2one('res.users', 'User', ondelete="cascade")
     active = fields.Boolean(default=True)
 

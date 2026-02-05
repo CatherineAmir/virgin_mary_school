@@ -41,11 +41,15 @@
                         </div>
                     </button>
                         </div>
+                          <field name="stage_id" invisible="is_enrolled_student" widget="statusbar"/>
+                        <field name="grade_id" invisible="not is_enrolled_student" widget="statusbar"/>
+
                         <field name="active" invisible="1"/>
                         <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
                                 invisible ="active == True"/>
-
-                        <div class="oe_title">
+                        <group>
+                            <group>
+                                 <div class="oe_title">
                             <label for="name"/>
                             <h1>
                                 <field name="name" placeholder="Full name English"/>
@@ -53,30 +57,38 @@
                             </h1>
 
                         </div>
+                            </group>
 
-                         <div class="row flex-column flex-sm-row align-items-center">
-                            <div class="o_employee_avatar ms-2 p-0 h-100 mw-25 align-self-start align-self-sm-center">
-                                <field name="image_1920" widget='image' class="m-0" options='{"size": [128,158], "zoom": true, "preview_image":"avatar_128"}'/>
+
+                                <div class="o_employee_avatar ms-2 p-0 h-100 mw-25 align-self-end align-self-sm-end">
+                                <field name="image_1920" widget='image' class="m-0 float-end" options='{"size": [128,158], "zoom": true, "preview_image":"avatar_128"}'/>
                             </div>
-                            <div class="align-self-start o_employee_form_header_info">
-                                <div class="oe_title ps-0 pe-2 mw-100">
-                                    <h5 class="d-flex align-items-baseline mb-0">
-<!--                                        <field name="title" options="{'no_create': True}" placeholder="Title"/>-->
-                                    </h5>
 
-                                    <div class="d-flex align-items-baseline w-md-50">
-                                        <i class="fa fa-fw me-1 fa-envelope text-primary" title="Email"/>
-                                        <field name="email" class="w-100" widget="email" placeholder="Email"/>
-                                    </div>
-                                    <div class="d-flex align-items-baseline w-md-50">
-                                        <i class="fa fa-fw me-1 fa-phone text-primary" title="Phone"/>
-                                        <field name="phone" class="w-100" widget="phone" placeholder="Phone"/>
-                                    </div>
+                        </group>
 
-                                </div>
-                            </div>
-                        </div>
-                        <br/>
+
+
+<!--                         <div class="row flex-column flex-sm-row align-items-center">-->
+
+<!--                            <div class="align-self-start o_employee_form_header_info">-->
+<!--&lt;!&ndash;                                <div class="oe_title ps-0 pe-2 mw-100">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <h5 class="d-flex align-items-baseline mb-0">&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                                        <field name="title" options="{'no_create': True}" placeholder="Title"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </h5>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                    <div class="d-flex align-items-baseline w-md-50">&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <i class="fa fa-fw me-1 fa-envelope text-primary" title="Email"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <field name="email" class="w-100" widget="email" placeholder="Email"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <div class="d-flex align-items-baseline w-md-50">&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <i class="fa fa-fw me-1 fa-phone text-primary" title="Phone"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <field name="phone" class="w-100" widget="phone" placeholder="Phone"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <br/>-->
 
 
                         <group>
@@ -86,11 +98,25 @@
                                     <field name="religion"/>
                                     <field name="transportation"/>
 
+
                             </group>
                             <group>
+                                <field name="grade_id"/>
+                                <field name="current_academic_year"/>
                                 <field name="id_number"/>
                                 <field name="nationality"/>
+
                                 <field name="birth_date"/>
+                                <label for="age_on_october"/>
+                                        <field name="date_required"/>
+                                <div class="oe_inline">
+                                    <field name="age_year" class="oe_inline"/> Years
+
+                                    <field name="age_month" class="oe_inline"/> Months
+                                    <field name="age_day" class="oe_inline"/> Days
+                                   </div>
+
+
                                 <field name="age_on_october"/>
                             </group>
                         </group>
@@ -98,9 +124,6 @@
                         <notebook>
                             <page string="Personal">
                                 <group>
-
-
-
                                 <field name="stage_id"/>
                                 <field name="partner_id" required="0"/>
                                 <field name="user_id"/>
@@ -108,6 +131,7 @@
                             </page>
                             <page string="Address &amp; Notes">
                                 <group>
+                                    <field name="parent_marital_status"/>
                                     <field name="detailed_address" colspan="2"/>
                                 </group>
                             </page>

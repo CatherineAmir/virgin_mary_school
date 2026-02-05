@@ -16,4 +16,6 @@ class AcademicYear(models.Model):
     required_documents = fields.Html('Required Docs')
     parent_contact_confirmation = fields.Html('Parent Contact Confirmation')
 
+    date_required_for_application=fields.Date('Required for Application')
+
 

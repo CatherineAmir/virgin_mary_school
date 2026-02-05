@@ -7,3 +7,4 @@ from . import academic_year
 from . import parent_relationship
 from . import parent
 from . import res_partner
+from . import res_company
