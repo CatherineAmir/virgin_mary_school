@@ -11,6 +11,7 @@
             <field name="arch" type="xml">
                 <list string="Student Grade" editable="bottom">
                     <field name="name"/>
+                    <field name="open_for_admission" widget="boolean_toggle"/>
 
                 </list>
             </field>

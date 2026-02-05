@@ -22,6 +22,7 @@
         'views/res_partner.xml',
         'views/parent_view.xml',
         'views/res_company.xml',
+        "templates/student_application_template.xml",
         "views/menus.xml",
 
     ],

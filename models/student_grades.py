@@ -6,3 +6,5 @@ class StudentGrades(models.Model):
     _description = 'Student Grades'
 
     name = fields.Char(required=True,translate=True)
+    open_for_admission = fields.Boolean(default=False)
+

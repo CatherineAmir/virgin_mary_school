@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="vm_student_application" t-name="Virgin Mary School - Student Application Form">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <h1 class="text-center">Student Application Form</h1>
+                <form action="/submit_application" method="post" class="mt-4">
+                      <div class="mb-3">
+                                <label for="customerImage" class="form-label">Upload Image</label>
+                                <input type="file" class="form-control" id="customerImage"
+                                       accept="image/*" t-on-change="onchangeImage(this)"/>
+                                <div class="form-text">Please Select 1 Image (JPG, PNG, GIF)</div>
+                            </div>
+<!--                    todo image preview-->
+                    <div class="mb-3" id="imagePreviewContainer"></div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="student_name_arabic">Student Full Name Arabic</label>
+                                <input type="text" class="form-control" id="student_name_arabic"
+                                       name="student_name_arabic" required="1"/>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="student_name_english">Student Full Name English</label>
+                                <input type="text" class="form-control" id="student_name_english"
+                                       name="student_name_english" required="1"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                               <div class="form-group">
+                        <label for="date_of_birth">Date of Birth</label>
+                        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required="1"/>
+<!--                    todo date Validation with age-->
+                    </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="place_of_birth">Place of Birth</label>
+                                <input type="text" class="form-control" id="place_of_birth" name="place_of_birth" required="1"/>
+                            </div>
+
+                    </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="nationality">Nationality</label>
+                                <select class="form-control" id="nationality" name="nationality" required="1">
+                            <t t-foreach="nationalities" t-as="nationality">
+                                <option t-att-value="nationality.id" t-att-selected="nationality.id==default_nationality.id">
+                                    <t t-esc="nationality.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="address">Detailed Address In Arabic</label>
+                                <input type="text" class="form-control" id="address" name="address" required="1"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="national_id">National Id</label>
+                              <input type="number" class="form-control" id="national_id" name="national_id" required="1"/>
+<!--                                todo national id validation-->
+                            </div>
+                        </div>
+
+                         <div class="col-md-6">
+                              <div class="form-group">
+                        <label for="grade_applied">Grade Applied For</label>
+                        <select class="form-control" id="grade_applied" name="grade_applied" required="1">
+                            <t t-foreach="grades" t-as="grade">
+                                <option t-att-value="grade.id">
+                                    <t t-esc="grade.name"/>
+                                </option>
+                            </t>
+                        </select>
+
+
+                    </div>
+                        </div>
+                    </div>
+
+<!--                    todo fix radios add Transportaion-->
+                    <div class="row my-2">
+                        <div class="col-md-4">
+                             <div class="form-group">
+                                 <label for="gender">Gender</label>
+                                 <input type="radio" id="gender_male" name="gender" value="male" required="1"/>
+                             </div>
+                        </div>
+
+                        <div class="col-md-4">
+                             <div class="form-group">
+                                 <label for="religion">Religion</label>
+                                 <input type="radio" id="christian" name="religion" value="male" required="1"/>
+                             </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                    <div class="form-group">
+                        <label for="parent_name">Parent/Guardian Name</label>
+                        <input type="text" class="form-control" id="parent_name" name="parent_name" required="1"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact_number">Contact Number</label>
+                        <input type="text" class="form-control" id="contact_number" name="contact_number" required="1"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" required="1"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Submit Application</button>
+                </form>
+            </div>
+        </t>
+        <script type="text/javascript" src="/virgin_mary_school/static/src/js/student_application.js"></script>
+
+    </template>
+</odoo>
