@@ -15,7 +15,7 @@ class VmStudent(models.Model):
     birth_date = fields.Date('Birth Date')
     age_on_october = fields.Char('Age on October',compute='_compute_age_on_october')
     place_of_birth = fields.Char(string="Place of Birth")
-    id_number = fields.Char("Student National ID")
+    national_id = fields.Char("Student National ID")
     nationality = fields.Many2one('res.country', 'Nationality')
 
     number_of_brothers = fields.Integer('Number of Brothers')
@@ -65,7 +65,7 @@ class VmStudent(models.Model):
 
     detailed_address = fields.Char('Detailed Address in Arabic')
 
-    transportation = fields.Selection([('Bus', "bus"), ("Other", "other")], string='Transportation')
+    transportation = fields.Selection([('bus', "Bus"), ("other", "Other")], string='Transportation')
 
     partner_id = fields.Many2one('res.partner', 'Partner',
                                  required=True, ondelete="cascade", delegate=True)
@@ -85,6 +85,10 @@ class VmStudent(models.Model):
     ])
 
     parent_ids = fields.Many2many('vm.parent', string='Parent')
+    previous_school_name=fields.Char('Previous School Name')
+
+    _unique_national_id = models.Constraint('unique(national_id)',
+                                      'National Id must be unique per student!')
 
     @api.model_create_multi
     def create(self, vals):

@@ -18,13 +18,16 @@ class StudentApplicationController(http.Controller):
             company_id=request.env["res.company"].sudo().search([])
             nationalities=request.env["res.country"].sudo().search([])
             default_nationality=nationalities.filtered(lambda n:n.code=="EG")
+            all_national_ids=request.env['vm.student'].sudo().search_read(domain=[],fields=['national_id'],offset=0, limit=None, order=None)
+            print("all_national_ids",all_national_ids)
         vals={
             "grades":grades,
             "parent_relationships":parent_relationships,
             "year":current_academic_year,
             "company_id":company_id,
             "nationalities":nationalities,
-            "default_nationality":default_nationality
+            "default_nationality":default_nationality,
+            "all_national_ids":all_national_ids,
         }
         print("vals",vals)
         return request.render('virgin_mary_school.vm_student_application', vals)

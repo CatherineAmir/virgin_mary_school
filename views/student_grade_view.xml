@@ -10,8 +10,11 @@
             <field name="model">vm.student.grade</field>
             <field name="arch" type="xml">
                 <list string="Student Grade" editable="bottom">
+                    <field name="sequence" widget="handle"/>
                     <field name="name"/>
                     <field name="open_for_admission" widget="boolean_toggle"/>
+                    <field name="is_parent" widget="boolean_toggle"/>
+                    <field name="parent_id"/>
 
                 </list>
             </field>

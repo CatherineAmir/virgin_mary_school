@@ -3,15 +3,20 @@
     <template id="vm_student_application" t-name="Virgin Mary School - Student Application Form">
         <t t-call="website.layout">
             <div class="container mt-5 mb-5">
-                <h1 class="text-center">Student Application Form</h1>
-                <form action="/submit_application" method="post" class="mt-4">
-                      <div class="mb-3">
-                                <label for="customerImage" class="form-label">Upload Image</label>
-                                <input type="file" class="form-control" id="customerImage"
-                                       accept="image/*" t-on-change="onchangeImage(this)"/>
-                                <div class="form-text">Please Select 1 Image (JPG, PNG, GIF)</div>
-                            </div>
-<!--                    todo image preview-->
+                <h1 class="text-center">Student Application Form For Academic Year </h1>
+                    <h2 class="text-center mb-4"><t t-esc="year.name"/></h2>
+<!--                <h1 class="text-center">Student Application Form</h1>-->
+                <form t-att-action="'/parent_details/id/%s' %(national_id)" method="post" class="form-control  form-card needs-validation"
+                      novalidate="novalidate"  id="form_request" enctype="multipart/form-data">
+
+                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="mb-3">
+                        <label for="customerImage" class="form-label">Upload Image</label>
+                        <input type="file" class="form-control" id="customerImage"
+                               accept="image/*" onchange="onchangeImage(this)"/>
+                        <div class="form-text">Please Select 1 Image (JPG, PNG, GIF)</div>
+                    </div>
+                    <!--                    todo image preview-->
                     <div class="mb-3" id="imagePreviewContainer"></div>
 
                     <div class="row">
@@ -19,7 +24,7 @@
                             <div class="form-group">
                                 <label for="student_name_arabic">Student Full Name Arabic</label>
                                 <input type="text" class="form-control" id="student_name_arabic"
-                                       name="student_name_arabic" required="1"/>
+                                       name="student_name_arabic" required="1" onchange="onchangeNameArabic(this);"/>
                             </div>
 
                         </div>
@@ -29,28 +34,29 @@
                             <div class="form-group">
                                 <label for="student_name_english">Student Full Name English</label>
                                 <input type="text" class="form-control" id="student_name_english"
-                                       name="student_name_english" required="1"/>
+                                       name="student_name_english" required="1"  onchange="onchangeNameEnglish(this);"/>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
-                               <div class="form-group">
-                        <label for="date_of_birth">Date of Birth</label>
-                        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required="1"/>
-<!--                    todo date Validation with age-->
-                    </div>
+                            <div class="form-group">
+                                <label for="date_of_birth">Date of Birth</label>
+                                <input type="date" class="form-control" id="date_of_birth" name="date_of_birth"
+                                       required="1"/>
+                                <!--                    todo date Validation with age-->
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="place_of_birth">Place of Birth</label>
-                                <input type="text" class="form-control" id="place_of_birth" name="place_of_birth" required="1"/>
+                                <input type="text" class="form-control" id="place_of_birth" name="place_of_birth"
+                                       required="1"/>
                             </div>
 
+                        </div>
                     </div>
-                    </div>
-
 
 
                     <div class="row">
@@ -58,13 +64,14 @@
                             <div class="form-group">
                                 <label for="nationality">Nationality</label>
                                 <select class="form-control" id="nationality" name="nationality" required="1">
-                            <t t-foreach="nationalities" t-as="nationality">
-                                <option t-att-value="nationality.id" t-att-selected="nationality.id==default_nationality.id">
-                                    <t t-esc="nationality.name"/>
-                                </option>
-                            </t>
-                        </select>
-                    </div>
+                                    <t t-foreach="nationalities" t-as="nationality">
+                                        <option t-att-value="nationality.id"
+                                                t-att-selected="nationality.id==default_nationality.id">
+                                            <t t-esc="nationality.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -77,67 +84,154 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="national_id">National Id</label>
-                              <input type="number" class="form-control" id="national_id" name="national_id" required="1"/>
-<!--                                todo national id validation-->
+                                <input type="number" class="form-control" id="national_id" name="national_id" t-att-value="national_id" required="1"
+
+
+                                      t-on-change="onChangeNationalId(this);" placeholder="Numbers Should be written in English"  t-att-data="all_national_ids"/>
+                                <!--                                todo national id validation-->
+<!--                                todo load all national id-->
                             </div>
                         </div>
 
-                         <div class="col-md-6">
-                              <div class="form-group">
-                        <label for="grade_applied">Grade Applied For</label>
-                        <select class="form-control" id="grade_applied" name="grade_applied" required="1">
-                            <t t-foreach="grades" t-as="grade">
-                                <option t-att-value="grade.id">
-                                    <t t-esc="grade.name"/>
-                                </option>
-                            </t>
-                        </select>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="grade_applied">Grade Applied For</label>
+                                <select class="form-control" id="grade_applied" name="grade_applied" required="1">
+                                    <t t-foreach="grades" t-as="grade">
+                                        <option t-att-value="grade.id">
+                                            <t t-esc="grade.name"/>
+                                        </option>
+                                    </t>
+                                </select>
 
 
-                    </div>
+                            </div>
                         </div>
                     </div>
 
-<!--                    todo fix radios add Transportaion-->
+                    <!--                    todo fix radios add Transportaion-->
+                    <div class="row my-5">
+<!--                        Gender-->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="gender">Gender</label>
+                                <label>
+                                    <input type="radio" name="gender" value="male"/>
+                                    Male
+                                </label>
+
+                                <label>
+                                    <input type="radio" name="gender" value="female"/>
+                                    Female
+                                </label>
+                            </div>
+                        </div>
+<!--                                    Religion-->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="religion">Religion</label>
+                                <label>
+                                    <input type="radio" name="religion" value="muslim" required="1"/>
+                                    Muslim
+                                </label>
+                                <label>
+                                    <input type="radio" name="religion" value="christian" required="1"/>
+                                    Christian
+                                </label>
+                            </div>
+                        </div>
+
+<!--                        Transportation-->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="transportation">Transportation</label>
+                                <label>
+                                    <input type="radio" name="transportation" value="bus"/>
+                                    Bus
+                                </label>
+                                <label>
+                                    <input type="radio" name="transportation" value="other"/>
+                                    Other
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row my-3">
+
+                         <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="previous_school_name">Previous School Name</label>
+                                <input type="text"  class="form-control" name="previous_school_name" id="previous_school_name" required="0"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="number_of_brothers">Number of Brothers</label>
+                                <input type="number"  class="form-control" name="number_of_brothers" id="number_of_brothers" value="0"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="number_of_sisters">Number of Sisters</label>
+                                <input type="number"  class="form-control" name="number_of_sisters" id="number_of_sisters" value="0"/>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <t t-out="year.parent_contact_confirmation"/>
+
                     <div class="row my-2">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                              <div class="form-group">
-                                 <label for="gender">Gender</label>
-                                 <input type="radio" id="gender_male" name="gender" value="male" required="1"/>
-                             </div>
+                                <label for="marital_status">Parent's Marital Status</label>
+                                <select class="form-control" id="marital_status" name="marital_status" required="1">
+                                        <option value="married" selected="1">Married</option>
+                                        <option value="separated">Separated</option>
+                                        <option value="divorced">Divorced</option>
+                                        <option value="widow">Widow(er)</option>
+                                </select>
+<!--                                <label>-->
+<!--                                    <input type="radio" name="marital_status" value="married"/>-->
+<!--                                    Married-->
+<!--                                </label>-->
+<!--                                <label>-->
+<!--                                    <input type="radio" name="marital_status" value="divorced"/>-->
+<!--                                    Divorced-->
+<!--                                </label>-->
+<!--                                 <label>-->
+<!--                                    <input type="radio" name="marital_status" value="widow"/>-->
+<!--                                    Widow(er)-->
+<!--                                </label>-->
+<!--                                 <label>-->
+<!--                                    <input type="radio" name="marital_status" value="other"/>-->
+<!--                                    Other-->
+<!--                                </label>-->
+                            </div>
                         </div>
+                        <div class="col col-md-6">
 
-                        <div class="col-md-4">
-                             <div class="form-group">
-                                 <label for="religion">Religion</label>
-                                 <input type="radio" id="christian" name="religion" value="male" required="1"/>
-                             </div>
+                            <label for="legal_custodian">Legal Custodian</label>
+                                <select class="form-control" id="legal_custodian" name="legal_custodian" required="1">
+                                        <option value="father" selected="1">Father</option>
+                                        <option value="mother">Separated</option>
+                                        <option value="other">Other</option>
+                                </select>
+                            <div class="small text-muted mx-2">If you are divorced, please submit custody papers of your child</div>
+
                         </div>
                     </div>
 
 
 
-
-
-
-
-                    <div class="form-group">
-                        <label for="parent_name">Parent/Guardian Name</label>
-                        <input type="text" class="form-control" id="parent_name" name="parent_name" required="1"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="contact_number">Contact Number</label>
-                        <input type="text" class="form-control" id="contact_number" name="contact_number" required="1"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" class="form-control" id="email" name="email" required="1"/>
-                    </div>
                     <button type="submit" class="btn btn-primary mt-3">Submit Application</button>
+
+                <script type="text/javascript" src="/virgin_mary_school/static/src/js/website/student_application.js"></script>
                 </form>
             </div>
         </t>
-        <script type="text/javascript" src="/virgin_mary_school/static/src/js/student_application.js"></script>
+
 
     </template>
 </odoo>
