@@ -16,7 +16,7 @@
                         <group>
                             <field name="email"/>
                              <field name="mobile"/>
-                            <field name="id_number"/>
+                            <field name="national_id"/>
                         </group>
                     <group>
                             <field name="relationship_id"/>

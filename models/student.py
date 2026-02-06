@@ -52,10 +52,10 @@ class VmStudent(models.Model):
 
 
     gender = fields.Selection([
-        ('m', 'Male'),
-        ('f', 'Female'),
+        ('male', 'Male'),
+        ('female', 'Female'),
 
-    ], 'Gender', required=True, default='m')
+    ], 'Gender', required=True, default='male')
 
     religion = fields.Selection([
         ('muslim', 'Muslim'),
@@ -83,6 +83,8 @@ class VmStudent(models.Model):
         ("divorced","Divorced"),
         ("widow(er)","Widow(er)"),
     ])
+    legal_custodian=fields.Selection([("father","Father"),("mother","Mother"),("other","Other")],string="Legal Custodian",default='father')
+
 
     parent_ids = fields.Many2many('vm.parent', string='Parent')
     previous_school_name=fields.Char('Previous School Name')

@@ -26,6 +26,14 @@
         "views/menus.xml",
 
     ],
+
+'assets': {
+        'web.assets_frontend': [
+
+            'https://cdn.jsdelivr.net/npm/flatpickr',
+            'https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ar.js',
+            'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css',
+            ]},
     'images': [
         "static/description/logo_1.png"
     ],

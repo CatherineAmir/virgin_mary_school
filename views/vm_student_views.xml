@@ -134,6 +134,7 @@
                             <page string="Address &amp; Notes">
                                 <group>
                                     <field name="parent_marital_status"/>
+                                    <field name="legal_custodian"/>
                                     <field name="detailed_address" colspan="2"/>
                                 </group>
                             </page>

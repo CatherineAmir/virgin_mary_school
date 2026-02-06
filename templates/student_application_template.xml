@@ -3,21 +3,17 @@
     <template id="vm_student_application" t-name="Virgin Mary School - Student Application Form">
         <t t-call="website.layout">
             <div class="container mt-5 mb-5">
-                <h1 class="text-center">Student Application Form For Academic Year </h1>
-                    <h2 class="text-center mb-4"><t t-esc="year.name"/></h2>
-<!--                <h1 class="text-center">Student Application Form</h1>-->
-                <form t-att-action="'/parent_details/id/%s' %(national_id)" method="post" class="form-control  form-card needs-validation"
-                      novalidate="novalidate"  id="form_request" enctype="multipart/form-data">
+                <h1 class="text-center">Student Application Form For Academic Year</h1>
+                <h2 class="text-center mb-4">
+                    <t t-esc="year.name"/>
+                </h2>
+                <!--                <h1 class="text-center">Student Application Form</h1>-->
+                <form t-att-action="'/parent_details/id/%s' %(national_id)" method="post"
+                      class="form-control  form-card needs-validation"
+                      novalidate="novalidate" id="form_request" enctype="multipart/form-data">
 
-                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                    <div class="mb-3">
-                        <label for="customerImage" class="form-label">Upload Image</label>
-                        <input type="file" class="form-control" id="customerImage"
-                               accept="image/*" onchange="onchangeImage(this)"/>
-                        <div class="form-text">Please Select 1 Image (JPG, PNG, GIF)</div>
-                    </div>
-                    <!--                    todo image preview-->
-                    <div class="mb-3" id="imagePreviewContainer"></div>
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
 
                     <div class="row">
                         <div class="col-md-6">
@@ -25,6 +21,13 @@
                                 <label for="student_name_arabic">Student Full Name Arabic</label>
                                 <input type="text" class="form-control" id="student_name_arabic"
                                        name="student_name_arabic" required="1" onchange="onchangeNameArabic(this);"/>
+                                <div class="invalid-feedback">
+                                    Name should be in Arabic letters only, please correct the name.
+                                    First name, then middle name, then last name
+
+                                </div>
+
+
                             </div>
 
                         </div>
@@ -34,26 +37,47 @@
                             <div class="form-group">
                                 <label for="student_name_english">Student Full Name English</label>
                                 <input type="text" class="form-control" id="student_name_english"
-                                       name="student_name_english" required="1"  onchange="onchangeNameEnglish(this);"/>
+                                       name="student_name_english" required="1" onchange="onchangeNameEnglish(this);"/>
+
+                                <div class="invalid-feedback">
+                                    Name should be in English letters only, please correct the name.
+                                    First name, then middle name, then last name
+
+                                </div>
+
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
+
+                            <!--                           placeholder='DD/MM/YYYY year then month then day , Numbers should be written  in English'/>-->
                             <div class="form-group">
                                 <label for="date_of_birth">Date of Birth</label>
-                                <input type="date" class="form-control" id="date_of_birth" name="date_of_birth"
+                                <input type="text" t-att-data-year="max_year" class="form-control" id="date_of_birth"
+                                       name="date_of_birth" autocomplete="off" onclick="showDatePicker(this);"
+
                                        required="1"/>
                                 <!--                    todo date Validation with age-->
                             </div>
+                            <div class="text-sm text-muted mx-2">Minimum age of 1 october
+                                <t t-esc="max_years"/>
+                                is 4 Years Old
+                            </div>
+
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="place_of_birth">Place of Birth</label>
                                 <input type="text" class="form-control" id="place_of_birth" name="place_of_birth"
                                        required="1"/>
+                                <div class="invalid-feedback">
+                                    This question is required, please enter the place of birth.
+
+                                </div>
                             </div>
+
 
                         </div>
                     </div>
@@ -84,14 +108,23 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="national_id">National Id</label>
-                                <input type="number" class="form-control" id="national_id" name="national_id" t-att-value="national_id" required="1"
+                                <input type="number" class="form-control" id="national_id" name="national_id"
+                                       t-att-value="national_id" required="1"
 
 
-                                      t-on-change="onChangeNationalId(this);" placeholder="Numbers Should be written in English"  t-att-data="all_national_ids"/>
-                                <!--                                todo national id validation-->
-<!--                                todo load all national id-->
+                                       onchange="onChangeNationalId(this);"
+                                       placeholder="Numbers Should be written in English"
+                                       t-att-data="all_national_ids"/>
+                                <div class="invalid-feedback" id="national_id_invalid_feedback">
+
+                                    National ID is required, please enter the national ID. It should be 14 digits and
+                                    start with 3.
+                                </div>
                             </div>
+                            <!--                                todo national id validation-->
+                            <!--                                todo load all national id-->
                         </div>
+
 
                         <div class="col-md-6">
                             <div class="form-group">
@@ -103,6 +136,10 @@
                                         </option>
                                     </t>
                                 </select>
+                                <div class="invalid-feedback">
+                                    Grade applied for is required, please select the grade you want to apply for.
+
+                                </div>
 
 
                             </div>
@@ -111,12 +148,12 @@
 
                     <!--                    todo fix radios add Transportaion-->
                     <div class="row my-5">
-<!--                        Gender-->
+                        <!--                        Gender-->
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="gender">Gender</label>
                                 <label>
-                                    <input type="radio" name="gender" value="male"/>
+                                    <input type="radio" name="gender" value="male" checked="1"/>
                                     Male
                                 </label>
 
@@ -126,7 +163,7 @@
                                 </label>
                             </div>
                         </div>
-<!--                                    Religion-->
+                        <!--                                    Religion-->
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="religion">Religion</label>
@@ -135,18 +172,18 @@
                                     Muslim
                                 </label>
                                 <label>
-                                    <input type="radio" name="religion" value="christian" required="1"/>
+                                    <input type="radio" name="religion" value="christian" required="1" checked="1"/>
                                     Christian
                                 </label>
                             </div>
                         </div>
 
-<!--                        Transportation-->
+                        <!--                        Transportation-->
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="transportation">Transportation</label>
                                 <label>
-                                    <input type="radio" name="transportation" value="bus"/>
+                                    <input type="radio" name="transportation" value="bus" checked="1"/>
                                     Bus
                                 </label>
                                 <label>
@@ -159,22 +196,25 @@
 
                     <div class="row my-3">
 
-                         <div class="col-md-4">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="previous_school_name">Previous School Name</label>
-                                <input type="text"  class="form-control" name="previous_school_name" id="previous_school_name" required="0"/>
+                                <input type="text" class="form-control" name="previous_school_name"
+                                       id="previous_school_name"/>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="number_of_brothers">Number of Brothers</label>
-                                <input type="number"  class="form-control" name="number_of_brothers" id="number_of_brothers" value="0"/>
+                                <input type="number" class="form-control" name="number_of_brothers" required="1"
+                                       id="number_of_brothers"/>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="number_of_sisters">Number of Sisters</label>
-                                <input type="number"  class="form-control" name="number_of_sisters" id="number_of_sisters" value="0"/>
+                                <input type="number" class="form-control" name="number_of_sisters" required="1"
+                                       id="number_of_sisters"/>
                             </div>
                         </div>
                     </div>
@@ -184,54 +224,444 @@
 
                     <div class="row my-2">
                         <div class="col-md-6">
-                             <div class="form-group">
+                            <div class="form-group">
                                 <label for="marital_status">Parent's Marital Status</label>
                                 <select class="form-control" id="marital_status" name="marital_status" required="1">
-                                        <option value="married" selected="1">Married</option>
-                                        <option value="separated">Separated</option>
-                                        <option value="divorced">Divorced</option>
-                                        <option value="widow">Widow(er)</option>
+                                    <option value="married" selected="1">Married</option>
+                                    <option value="separated">Separated</option>
+                                    <option value="divorced">Divorced</option>
+                                    <option value="widow">Widow(er)</option>
                                 </select>
-<!--                                <label>-->
-<!--                                    <input type="radio" name="marital_status" value="married"/>-->
-<!--                                    Married-->
-<!--                                </label>-->
-<!--                                <label>-->
-<!--                                    <input type="radio" name="marital_status" value="divorced"/>-->
-<!--                                    Divorced-->
-<!--                                </label>-->
-<!--                                 <label>-->
-<!--                                    <input type="radio" name="marital_status" value="widow"/>-->
-<!--                                    Widow(er)-->
-<!--                                </label>-->
-<!--                                 <label>-->
-<!--                                    <input type="radio" name="marital_status" value="other"/>-->
-<!--                                    Other-->
-<!--                                </label>-->
+
+                                <div class="invalid-feedback">
+                                    Parent's marital status is required, please select the marital status of the parent.
+
+                                </div>
                             </div>
                         </div>
                         <div class="col col-md-6">
 
                             <label for="legal_custodian">Legal Custodian</label>
-                                <select class="form-control" id="legal_custodian" name="legal_custodian" required="1">
-                                        <option value="father" selected="1">Father</option>
-                                        <option value="mother">Separated</option>
-                                        <option value="other">Other</option>
-                                </select>
-                            <div class="small text-muted mx-2">If you are divorced, please submit custody papers of your child</div>
+                            <select class="form-control" id="legal_custodian" name="legal_custodian" required="1">
+                                <option value="father" selected="1">Father</option>
+                                <option value="mother">Separated</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <div class="small text-muted mx-2">If you are divorced, please submit custody papers of your
+                                child
+                            </div>
+                            <div class="invalid-feedback">
+                                Legal custodian is required, please select the legal custodian of the child.
+
+                            </div>
 
                         </div>
                     </div>
 
 
-
                     <button type="submit" class="btn btn-primary mt-3">Submit Application</button>
-
-                <script type="text/javascript" src="/virgin_mary_school/static/src/js/website/student_application.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+                    <script type="text/javascript"
+                            src="/virgin_mary_school/static/src/js/website/student_application.js"></script>
                 </form>
             </div>
         </t>
 
 
     </template>
+
+
+    <template id="parent_data" name="Parents' Data">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <h1 class="text-center">Parents' Data</h1>
+                <form t-att-action="thank_you" method="post"
+                      class="form-control  form-card needs-validation"
+                      novalidate="novalidate" id="form_request" enctype="multipart/form-data">
+
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <h2 class="text-start mb-4">
+                        Father's Info
+                    </h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="father_name">Father's Full Name</label>
+                                <input type="text" class="form-control" id="father_name"
+                                       name="father_name" required="1"/>
+                                <div class="invalid-feedback">
+                                    Father's name is required, please enter the father's full name.
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="father_nationality">Nationality</label>
+                                <select class="form-control" id="father_nationality" name="father_nationality"
+                                        required="1">
+                                    <t t-foreach="nationalities" t-as="nationality">
+                                        <option t-att-value="nationality.id"
+                                                t-att-selected="nationality.id==default_nationality.id">
+                                            <t t-esc="nationality.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row my-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="national_id_father">National Id</label>
+                                <input type="number" class="form-control" id="national_id_father"
+                                       name="national_id_father"
+                                       t-att-value="father_national_id" required="1"
+
+
+                                       onchange="onChangeNationalIdParent(this);"
+                                       placeholder="Numbers Should be written in English"
+                                       t-att-data="all_national_ids"/>
+                                <div class="invalid-feedback" id="national_id_invalid_feedback">
+
+                                    National ID is required, please enter the national ID. It should be 14 digits and
+                                    start with 2 or 3.
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <!--                                todo phone Validation-->
+                            <div class="form-group">
+                                <label for="father_phone">Phone Number</label>
+                                <input type="text" class="form-control" id="father_phone" name="father_phone"
+                                       required="1"/>
+                                <div class="invalid-feedback">
+                                    Father's phone number is required, please enter the father's phone number.
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row my-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="father_email">Email</label>
+                                <input type="email" class="form-control" id="father_email" name="father_email"
+                                       required="1"/>
+                                <div class="invalid-feedback">
+                                    Father's email is required, please enter the father's email.
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="address">Residential Address in Arabic:</label>
+                                <input type="text" class="form-control" id="address" name="address"
+                                       required="1"/>
+                                <div class="invalid-feedback">
+                                    Father's residential address is required, please enter the father's residential
+                                    address in Arabic.
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row my-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="father_job">Job Title</label>
+                                <input type="text" class="form-control" id="father_job" name="father_job"
+                                       required="1"/>
+                                <div class="invalid-feedback">
+                                    Father's job title is required, please enter the father's job title.
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="father_education">Education Level</label>
+                                <input type="text" class="form-control" id="father_education" name="father_education"
+                                       required="1"/>
+                                <div class="invalid-feedback">
+                                    Father's education level is required, please enter the father's education level.
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <h2 class="text-start mb-4">
+                        Mothers's Info
+                    </h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="father_name">Mothers's Full Name</label>
+                                <input type="text" class="form-control" id="mother_name"
+                                       name="mother_name" required="1"/>
+                                <div class="invalid-feedback">
+                                    Mother's name is required, please enter the Mother's full name.
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="mother_nationality">Nationality</label>
+                                <select class="form-control" id="mother_nationality" name="mother_nationality"
+                                        required="1">
+                                    <t t-foreach="nationalities" t-as="nationality">
+                                        <option t-att-value="nationality.id"
+                                                t-att-selected="nationality.id==default_nationality.id">
+                                            <t t-esc="nationality.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row my-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="national_id_mother">National Id</label>
+                                <input type="number" class="form-control" id="national_id_mother"
+                                       name="national_id_father"
+                                       t-att-value="mother_national_id" required="1"
+
+
+                                       onchange="onChangeNationalIdParent(this);"
+                                       placeholder="Numbers Should be written in English"
+                                       t-att-data="all_national_ids"/>
+                                <div class="invalid-feedback" id="national_id_invalid_feedback">
+
+                                    National ID is required, please enter the national ID. It should be 14 digits and
+                                    start with 2 or 3.
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <!--                                todo phone Validation-->
+                            <div class="form-group">
+                                <label for="mother_phone">Phone Number</label>
+                                <input type="text" class="form-control" id="mother_phone" name="mother_phone"
+                                       required="1"/>
+                                <div class="invalid-feedback">
+                                    Mother's phone number is required, please enter the father's phone number.
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row my-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="mother_email">Email</label>
+                                <input type="email" class="form-control" id="mother_email" name="mother_email"
+                                       required="1"/>
+                                <div class="invalid-feedback">
+                                    Mother's email is required, please enter the Mother's email.
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="address">Residential Address in Arabic:</label>
+                                <input type="text" class="form-control" id="address" name="address"
+                                       required="1"/>
+                                <div class="invalid-feedback">
+                                    Mother's residential address is required, please enter the Mother's residential
+                                    address in Arabic.
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row my-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="mother_job">Job Title</label>
+                                <input type="text" class="form-control" id="mother_job" name="mother_job"
+                                       required="1"/>
+                                <div class="invalid-feedback">
+                                    Mother's job title is required, please enter the mother's job title.
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="mother_education">Education Level</label>
+                                <input type="text" class="form-control" id="mother_education" name="mother_education"
+                                       required="1"/>
+                                <div class="invalid-feedback">
+                                    Mother's education level is required, please enter the mother's education level.
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <t t-if="siblings">
+                    <h2>Siblings data</h2>
+                    <div class="row my-3">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Sibling Name</th>
+                                    <th>Sibling Grade</th>
+                                </tr>
+                            </thead>
+                            <tbody id="siblingsTableBody">
+                                <t t-foreach="siblings" t-as="s">
+                                    <tr>
+                                        <td>
+                                            <input type="text" name="'sibling_name_'%(s)" id="'sibling_name_'%(s)"
+                                                   class="form-control"/>
+                                        </td>
+
+                                        <td>
+                                            <select name="'sibling_grade_'%(s)" id="'sibling_grade_'%(s)"
+                                                    class="form-control">
+                                                <option value="">Select Grade</option>
+                                                <t t-foreach="parent_grades" t-as="grade">
+                                                    <option t-att-value="grade.id">
+                                                        <t t-esc="grade.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <!-- Sibling rows will be added here dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                    </t>
+
+
+                    <h2>Required documents</h2>
+                    <div class="row my-3">
+
+
+                        <div class="col-md-6">
+                            <label for="father_id_front" class="form-label">Father National ID Front</label>
+                            <input type="file" class="form-control" id="father_id_front"
+                                   name="father_id_front" accept=".pdf,.jpg,.jpeg,.png"
+
+                              data-show-upload="true" data-show-caption="true" lass="file"
+                               data-show-preview="true"
+                            />
+
+                            <div class="form-text">Please upload the Copy of Father's National Id Front Side in PDF,
+                                JPG, JPEG, or PNG format.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="father_id_back" class="form-label">Father National ID Back</label>
+                            <input type="file" class="form-control" id="father_id_back"
+                                   name="father_id_back" accept=".pdf,.jpg,.jpeg,.png"/>
+                            Please upload the Copy of Father's National Id Back Side in PDF, JPG, JPEG, or PNG format.
+                        </div>
+                    </div>
+
+
+                    <div class="row my-3">
+
+
+                        <div class="col-md-6">
+                            <label for="mother_id_front" class="form-label">Mother National ID Front</label>
+                            <input type="file" class="form-control" id="mother_id_front"
+                                   name="mother_id_front"
+                                   data-show-upload="true" data-show-caption="true" lass="file"
+                                   data-show-preview="true"
+                                   accept=".pdf,.jpg,.jpeg,.png"/>
+                            <div class="form-text">Please upload the Copy of Mother's National Id Front Side in PDF,
+                                JPG, JPEG, or PNG format.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="mother_id_back" class="form-label">Mother National ID Back</label>
+                            <input type="file" class="form-control" id=" mother_id_back"
+                                   name="mother_id_back" accept=".pdf,.jpg,.jpeg,.png"/>
+                            Please upload the Copy of Mother's National Id Back Side in PDF, JPG, JPEG, or PNG format.
+                        </div>
+                    </div>
+
+
+                    <div class="row my-3">
+
+                        <div class="col-md-6">
+                            <label for="birth_certificate" class="form-label">Child Birth Certificate</label>
+                            <input type="file" class="form-control" id="birth_certificate"
+                                   name="birth_certificate"
+                                   data-show-upload="true" data-show-caption="true" lass="file"
+                                   data-show-preview="true"
+                                   accept=".pdf,.jpg,.jpeg,.png"/>
+
+
+                            <div class="form-text">Please upload the birth certificate of the student in PDF, JPG, JPEG,
+                                or PNG format.
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="student_image" class="form-label">Upload Student Image</label>
+                                <input type="file" class="form-control" id="student_image"
+                                       data-show-upload="true" data-show-caption="true" lass="file"
+                                       data-show-preview="true"
+                                       accept="image/*"/>
+                                <div class="form-text">Please Select 1 Image (JPG, PNG, GIF)</div>
+                            </div>
+                            <!--                    todo image preview-->
+
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btn-secondary mt-3">Submit Application</button>
+
+                 <script type="text/javascript"
+                            src="/virgin_mary_school/static/src/js/website/student_application.js"></script>
+                </form>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="application_thank_you" name="Application Thank You">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <h1 class="text-center">Thank You!</h1>
+                <p class="text-center">
+                    <!--                    , Your Application has been Completed Successfully , we Will Get back To you Soon-->
+                    application has been completed successfully. We will get back to you soon.
+                </p>
+            </div>
+        </t>
+    </template>
+
+
 </odoo>

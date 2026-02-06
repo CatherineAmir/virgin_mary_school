@@ -21,7 +21,7 @@ class VmParent(models.Model):
     address=fields.Char(string='Resident Address in Arabic')
     education=fields.Char(string='Education',tracking=True)
     job=fields.Char(string='Job',tracking=True)
-    id_number=fields.Char("National ID",tracking=True)
+    national_id=fields.Char("National ID",tracking=True)
 
     _unique_parent = models.Constraint('unique(name)',
                                        'Can not create parent multiple times.!')
