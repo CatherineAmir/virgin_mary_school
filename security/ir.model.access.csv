@@ -5,3 +5,4 @@ access_vm_student_grade,access_vm_student_grade,model_vm_student_grade,,1,1,1,1
 access_vm_academic_year,access_vm_academic_year,model_vm_academic_year,,1,1,1,1
 access_vm_parent_relationship,access_vm_parent_relationship.model_vm_parent_relationship,model_vm_parent_relationship,,1,1,1,1
 access_vm_parent,access_vm_parent,model_vm_parent,,1,1,1,1
+access_vm_siblings,access_vm_siblings,model_vm_siblings,,1,1,1,1

@@ -90,8 +90,8 @@ class VmStudent(models.Model):
     previous_school_name=fields.Char('Previous School Name')
 
     _unique_national_id = models.Constraint('unique(national_id)',
-                                      'National Id must be unique per student!')
-
+                                  'National Id must be unique per student!')
+    siblings_ids = fields.One2many('vm.siblings',"student_id", string='Siblings')
     @api.model_create_multi
     def create(self, vals):
         res = super(VmStudent, self).create(vals)
@@ -141,7 +141,7 @@ class VmStudent(models.Model):
     def get_parent(self):
         self.ensure_one()
         action = self.env.ref(
-            'virgin_mary_school.act_open_op_parent_view').sudo().read()[0]
+            'virgin_mary_school.parent_view_action').sudo().read()[0]
         action['domain'] = [('student_ids', 'in', self.ids)]
         action['context'] = {'default_student_ids': [(6, 0, self.ids)]}
         return action

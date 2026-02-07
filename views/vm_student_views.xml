@@ -143,6 +143,15 @@
                             <field name="number_of_brothers"/>
                             <field name="number_of_sisters"/>
                                 </group>
+                                <group>
+                                    <field name="siblings_ids">
+                                        <list string="Siblings" create="true" edit="true" delete="true">
+                                            <field name="student_id" column_invisible="1"/>
+                                            <field name="name"/>
+                                            <field name="grade_id"/>
+                                        </list>
+                                    </field>
+                                </group>
                             </page>
                         </notebook>
 
@@ -160,10 +169,10 @@
             <field name="arch" type="xml">
                 <search string="Students">
                     <field name="name"/>
-<!--                    <field name="id_number"/>-->
+                    <field name="national_id"/>
 <!--                    <field name="stage_id"/>-->
-<!--                    <field name="nationality"/>-->
-<!--                    <field name="gender"/>-->
+                    <field name="nationality"/>
+                    <field name="gender"/>
 <!--                    <field name="user_id"/>-->
 
 <!--                    <filter string="Active" name="filter_active" domain="[('active', '=', True)]"/>-->

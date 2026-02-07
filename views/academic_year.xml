@@ -24,13 +24,17 @@
                     </group>
 
                 <notebook>
-                    <page string="New Page">
+                    <page string="Required Documents">
                         <field name="required_documents"/>
                         <!-- Page content goes here -->
                     </page>
                     <page string="Parent Contact Confirmation">
                         <field name="parent_contact_confirmation"/>
                         <!-- Page content goes here -->
+                    </page>
+
+                    <page string="Parent/Guardian Undertaking">
+                        <field name="parent_undertaking"/>
                     </page>
                 </notebook>
                  </sheet>

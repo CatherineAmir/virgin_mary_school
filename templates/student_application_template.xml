@@ -101,9 +101,13 @@
                             <div class="form-group">
                                 <label for="address">Detailed Address In Arabic</label>
                                 <input type="text" class="form-control" id="address" name="address" required="1"/>
-                            </div>
+                                <div class="invalid-feedback">
+                                    Detailed address is required, please enter the detailed address in Arabic.
+                                </div>
+                                </div>
                         </div>
                     </div>
+
                     <div class="row my-2">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -257,9 +261,11 @@
 
                         </div>
                     </div>
-
-
-                    <button type="submit" class="btn btn-primary mt-3">Submit Application</button>
+                    <div class="form-group  my-4">
+                    <input type="checkbox" class="form-check-input" id="confirm_data" name="confirm_data" required="1"/>
+                    <label class="form-check-label" for="confirm_data">I confirm that the data entered is accurate and correct </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Next Page</button>
                     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
                     <script type="text/javascript"
                             src="/virgin_mary_school/static/src/js/website/student_application.js"></script>
@@ -275,16 +281,17 @@
         <t t-call="website.layout">
             <div class="container mt-5 mb-5">
                 <h1 class="text-center">Parents' Data</h1>
-                <form t-att-action="thank_you" method="post"
+                <form action="/thank_you" method="post"
                       class="form-control  form-card needs-validation"
                       novalidate="novalidate" id="form_request" enctype="multipart/form-data">
-
+                     <input type="hidden" name="national_id" t-att-value="national_id"/>
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                     <h2 class="text-start mb-4">
-                        Father's Info
+                        Father's / Guardian Info
                     </h2>
+
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="father_name">Father's Full Name</label>
                                 <input type="text" class="form-control" id="father_name"
@@ -295,7 +302,21 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="father_parent_relation">Relation</label>
+                                <select class="form-control" id="father_parent_relation" name="father_parent_relation"
+                                        required="1">
+                                    <t t-foreach="parent_relation" t-as="relation">
+                                        <option t-att-value="relation.id" t="att-selected=relation.id==father_default">
+                                            <t t-esc="relation.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="father_nationality">Nationality</label>
                                 <select class="form-control" id="father_nationality" name="father_nationality"
@@ -309,6 +330,7 @@
                                 </select>
                             </div>
                         </div>
+
                     </div>
 
                     <div class="row my-3">
@@ -320,10 +342,10 @@
                                        t-att-value="father_national_id" required="1"
 
 
-                                       onchange="onChangeNationalIdParent(this);"
+                                       onchange="onChangeNationalIdFather(this);"
                                        placeholder="Numbers Should be written in English"
                                        t-att-data="all_national_ids"/>
-                                <div class="invalid-feedback" id="national_id_invalid_feedback">
+                                <div class="invalid-feedback" id="father_national_id_invalid_feedback">
 
                                     National ID is required, please enter the national ID. It should be 14 digits and
                                     start with 2 or 3.
@@ -362,8 +384,8 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="address">Residential Address in Arabic:</label>
-                                <input type="text" class="form-control" id="address" name="address"
+                                <label for="father_address">Residential Address in Arabic:</label>
+                                <input type="text" class="form-control" id="father_address" name="father_address"
                                        required="1"/>
                                 <div class="invalid-feedback">
                                     Father's residential address is required, please enter the father's residential
@@ -403,10 +425,10 @@
 
 
                     <h2 class="text-start mb-4">
-                        Mothers's Info
+                        Mothers's / Guardian Info
                     </h2>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="father_name">Mothers's Full Name</label>
                                 <input type="text" class="form-control" id="mother_name"
@@ -417,7 +439,21 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+
+                         <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="mother_parent_relation">Relation</label>
+                                <select class="form-control" id="mother_parent_relation" name="mother_parent_relation"
+                                        required="1">
+                                    <t t-foreach="parent_relation" t-as="relation">
+                                        <option t-att-value="relation.id" t-att-selected="relation.id==mother_default">
+                                            <t t-esc="relation.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="mother_nationality">Nationality</label>
                                 <select class="form-control" id="mother_nationality" name="mother_nationality"
@@ -436,16 +472,16 @@
                     <div class="row my-3">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="national_id_mother">National Id</label>
-                                <input type="number" class="form-control" id="national_id_mother"
-                                       name="national_id_father"
+                                <label for="mother_national_id">National Id</label>
+                                <input type="number" class="form-control" id="mother_national_id"
+                                       name="mother_national_id"
                                        t-att-value="mother_national_id" required="1"
 
 
-                                       onchange="onChangeNationalIdParent(this);"
+                                       onchange="onChangeNationalIdMother(this);"
                                        placeholder="Numbers Should be written in English"
                                        t-att-data="all_national_ids"/>
-                                <div class="invalid-feedback" id="national_id_invalid_feedback">
+                                <div class="invalid-feedback" id="mother_national_id_invalid_feedback">
 
                                     National ID is required, please enter the national ID. It should be 14 digits and
                                     start with 2 or 3.
@@ -484,8 +520,8 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="address">Residential Address in Arabic:</label>
-                                <input type="text" class="form-control" id="address" name="address"
+                                <label for="mother_address">Residential Address in Arabic:</label>
+                                <input type="text" class="form-control" id="mother_address" name="mother_address"
                                        required="1"/>
                                 <div class="invalid-feedback">
                                     Mother's residential address is required, please enter the Mother's residential
@@ -536,13 +572,13 @@
                                 <t t-foreach="siblings" t-as="s">
                                     <tr>
                                         <td>
-                                            <input type="text" name="'sibling_name_'%(s)" id="'sibling_name_'%(s)"
-                                                   class="form-control"/>
+                                            <input type="text" t-attf-name="sibling_name_#{s}" t-attf-id="sibling_name_#{s}"
+                                                   class="form-control" required="1"/>
                                         </td>
 
                                         <td>
-                                            <select name="'sibling_grade_'%(s)" id="'sibling_grade_'%(s)"
-                                                    class="form-control">
+                                            <select t-attf-name="sibling_grade_#{s}" t-attf-id="sibling_grade_#{s}"
+                                                    class="form-control" required="1">
                                                 <option value="">Select Grade</option>
                                                 <t t-foreach="parent_grades" t-as="grade">
                                                     <option t-att-value="grade.id">
@@ -567,7 +603,7 @@
                         <div class="col-md-6">
                             <label for="father_id_front" class="form-label">Father National ID Front</label>
                             <input type="file" class="form-control" id="father_id_front"
-                                   name="father_id_front" accept=".pdf,.jpg,.jpeg,.png"
+                                   name="father_id_front_docs" accept=".pdf,.jpg,.jpeg,.png"
 
                               data-show-upload="true" data-show-caption="true" lass="file"
                                data-show-preview="true"
@@ -580,7 +616,7 @@
                         <div class="col-md-6">
                             <label for="father_id_back" class="form-label">Father National ID Back</label>
                             <input type="file" class="form-control" id="father_id_back"
-                                   name="father_id_back" accept=".pdf,.jpg,.jpeg,.png"/>
+                                   name="father_id_back_docs" accept=".pdf,.jpg,.jpeg,.png"/>
                             Please upload the Copy of Father's National Id Back Side in PDF, JPG, JPEG, or PNG format.
                         </div>
                     </div>
@@ -592,7 +628,7 @@
                         <div class="col-md-6">
                             <label for="mother_id_front" class="form-label">Mother National ID Front</label>
                             <input type="file" class="form-control" id="mother_id_front"
-                                   name="mother_id_front"
+                                   name="mother_id_front_docs"
                                    data-show-upload="true" data-show-caption="true" lass="file"
                                    data-show-preview="true"
                                    accept=".pdf,.jpg,.jpeg,.png"/>
@@ -603,7 +639,7 @@
                         <div class="col-md-6">
                             <label for="mother_id_back" class="form-label">Mother National ID Back</label>
                             <input type="file" class="form-control" id=" mother_id_back"
-                                   name="mother_id_back" accept=".pdf,.jpg,.jpeg,.png"/>
+                                   name="mother_id_back_docs" accept=".pdf,.jpg,.jpeg,.png"/>
                             Please upload the Copy of Mother's National Id Back Side in PDF, JPG, JPEG, or PNG format.
                         </div>
                     </div>
@@ -614,7 +650,7 @@
                         <div class="col-md-6">
                             <label for="birth_certificate" class="form-label">Child Birth Certificate</label>
                             <input type="file" class="form-control" id="birth_certificate"
-                                   name="birth_certificate"
+                                   name="birth_certificate_docs"
                                    data-show-upload="true" data-show-caption="true" lass="file"
                                    data-show-preview="true"
                                    accept=".pdf,.jpg,.jpeg,.png"/>
@@ -629,7 +665,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="student_image" class="form-label">Upload Student Image</label>
-                                <input type="file" class="form-control" id="student_image"
+                                <input type="file" class="form-control" id="student_image" name="student_image_docs"
                                        data-show-upload="true" data-show-caption="true" lass="file"
                                        data-show-preview="true"
                                        accept="image/*"/>
@@ -640,6 +676,29 @@
                         </div>
                     </div>
 
+                    <div class="row my-3 mx-3">
+                        <t t-out="year.required_documents"/>
+                    </div>
+
+                     <div class="form-group  my-4">
+
+                    <input type="checkbox" class="form-check-input" id="confirm_data" name="confirm_data" required="1"/>
+                    <label class="form-check-label" for="confirm_data">I confirm that  I undertake the Following </label>
+                    </div>
+                    <div class="row my-3 mx-3">
+                        <t t-out="year.parent_undertaking"/>
+                    </div>
+
+
+
+
+
+
+                    <div class="form-group  my-4">
+
+                    <input type="checkbox" class="form-check-input" id="confirm_data" name="confirm_data" required="1"/>
+                    <label class="form-check-label" for="confirm_data">I confirm that the data entered is accurate and correct </label>
+                    </div>
 
                     <button type="submit" class="btn btn-secondary mt-3">Submit Application</button>
 

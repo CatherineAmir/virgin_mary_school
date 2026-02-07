@@ -23,8 +23,8 @@ class VmParent(models.Model):
     job=fields.Char(string='Job',tracking=True)
     national_id=fields.Char("National ID",tracking=True)
 
-    _unique_parent = models.Constraint('unique(name)',
-                                       'Can not create parent multiple times.!')
+    # _unique_parent = models.Constraint('unique(name)',
+    #                                    'Can not create parent multiple times.!')
 
     def _onchange_name(self):
         if self.name:
@@ -76,8 +76,8 @@ class VmParent(models.Model):
                 })
                 vals['name'] = new_partner.id
                 vals['email'] = parent_email
-                vals['phone'] = parent_mobile
-
+                vals['mobile'] = parent_mobile
+        print("vals_list",vals_list)
         res = super(VmParent, self).create(vals_list)
 
         for record in res:

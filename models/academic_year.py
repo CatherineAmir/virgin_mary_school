@@ -18,4 +18,5 @@ class AcademicYear(models.Model):
 
     date_required_for_application=fields.Date('Required for Application')
 
+    parent_undertaking=fields.Html('Parent Undertaking')
 
