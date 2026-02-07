@@ -35,7 +35,7 @@
             'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css',
             ]},
     'images': [
-        "static/description/logo_1.png"
+        "static/description/logo.png"
     ],
     'license': 'LGPL-3',
     'installable': True,

@@ -225,32 +225,12 @@ function onChangeNationalIdFather(nationalIdInput) {
     }
 
 
-    console.log("nationality", nationality);
-    // const nationalIdArray = document.querySelector("#national_id_father").getAttribute("data");
-    console.log("nationalIDArray", nationalIdArray);
-    if(nationalIdArray) {
 
-        let nationalIDArray = JSON.parse(nationalIdArray.replaceAll("'", '"').replaceAll("None", "")
-            .replaceAll("+", "").replaceAll(" ", "").replaceAll("-", "").replaceAll(/\bNone\b/g, 'null').replaceAll(/\bFalse\b/g, 'false').replaceAll(/[\s\-+]/g, ''));
-        // console.log("nationalIDArray", nationalIDArray);
-
-
-        // let searchparents = searchID(national_id.replaceAll("-", '"').replaceAll("+", "").replaceAll(" ", "").replaceAll(/\bNone\b/g, 'null').replaceAll(/\bFalse\b/g, 'false').replaceAll(/[\s\-+]/g, ''), nationalIDArray);
-        // if (searchparents !== -1) {
-        //
-        //     nationalIdInput.setCustomValidity("Your National Id Is Registered before you can't fill a new form");
-        //     NationalIdInvalidDiv.textContent = "Your National Id Is Registered before you can't fill a new form";
-        //
-        //
-        // }
-    }
 
     if (nationality && nationality === (65).toString()) {
-        // console.log("Egyptian National ID Validation");
-        // console.log("national_id", national_id.length);
-        // console.log("national_idstart", national_id[0]);
+
         if (!((national_id.match(id_v)) && (national_id.startsWith("3") || national_id.startsWith("2")))) {
-            // console.log("E", "Failed");
+
             nationalIdInput.setCustomValidity("National ID Format is incorrect! It should be 14 digits starting 2 or 3");
 
 
@@ -265,14 +245,13 @@ function onChangeNationalIdFather(nationalIdInput) {
 
 
     }
-    console.log("national_id",national_id)
-    // $('form').attr('action', '/parent_detail/id/' + national_id.replaceAll(" ", ""));
+
     nationalIdInput.closest('form').classList.add('was-validated');
 }
 
 function onChangeNationalIdMother(nationalIdInput) {
     const id_v = /^\d{14}$/;
-    // console.log("onChangeNationalId");
+
     let national_id = nationalIdInput.value.replaceAll(" ", "");
     const NationalIdInvalidDiv = document.getElementById("mother_national_id_invalid_feedback");
 
@@ -282,25 +261,7 @@ function onChangeNationalIdMother(nationalIdInput) {
     }
 
 
-    console.log("nationality", nationality);
-    const nationalIdArray = document.querySelector("#mother_national_id").getAttribute("data");
-    console.log("nationalIDArray", nationalIdArray);
-    if(nationalIdArray) {
 
-        let nationalIDArray = JSON.parse(nationalIdArray.replaceAll("'", '"').replaceAll("None", "")
-            .replaceAll("+", "").replaceAll(" ", "").replaceAll("-", "").replaceAll(/\bNone\b/g, 'null').replaceAll(/\bFalse\b/g, 'false').replaceAll(/[\s\-+]/g, ''));
-        console.log("nationalIDArray", nationalIDArray);
-
-
-        // let searchparents = searchID(national_id.replaceAll("-", '"').replaceAll("+", "").replaceAll(" ", "").replaceAll(/\bNone\b/g, 'null').replaceAll(/\bFalse\b/g, 'false').replaceAll(/[\s\-+]/g, ''), nationalIDArray);
-        // if (searchparents !== -1) {
-        //
-        //     nationalIdInput.setCustomValidity("Your National Id Is Registered before you can't fill a new form");
-        //     NationalIdInvalidDiv.textContent = "Your National Id Is Registered before you can't fill a new form";
-        //
-        //
-        // }
-    }
 
     if (nationality && nationality === (65).toString()) {
         console.log("Egyptian National ID Validation");
@@ -322,7 +283,7 @@ function onChangeNationalIdMother(nationalIdInput) {
 
 
     }
-    console.log("national_id",national_id)
+
 
     nationalIdInput.closest('form').classList.add('was-validated');
 }

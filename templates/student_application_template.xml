@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="vm_student_application" t-name="Virgin Mary School - Student Application Form">
+    <template id="vm_student_application" name="Virgin Mary School - Student Application Form">
         <t t-call="website.layout">
             <div class="container mt-5 mb-5">
                 <h1 class="text-center">Student Application Form For Academic Year</h1>

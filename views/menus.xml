@@ -2,7 +2,7 @@
 <odoo>
     <data>
 
-        <menuitem name="Virgin Mary School" id="virgin_mary_school_menu" sequence="10" web_icon="virgin_mary_school,static/description/logo_1.jpg"/>
+        <menuitem name="Virgin Mary School" id="virgin_mary_school_menu" sequence="10" web_icon="virgin_mary_school,static/description/logo.png"/>
         <menuitem name="Configuration" id="configuration_menu" parent="virgin_mary_school_menu" sequence="100"/>
 
 
