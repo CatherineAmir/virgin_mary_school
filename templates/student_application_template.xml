@@ -3,6 +3,13 @@
     <template id="vm_student_application" name="Virgin Mary School - Student Application Form">
         <t t-call="website.layout">
             <div class="container mt-5 mb-5">
+
+                <img src="/virgin_mary_school/static/description/logo.png" class="mx-auto" alt="Virgin Mary School Logo" style="max-width: 200px;"/>
+                <div class="text-center mb-3 mt-0">
+                    <h1 class="display-4">Welcome to Virgin Mary School</h1>
+                    <p class="lead">Please fill out the student application form below to apply for the academic year.</p>
+                </div>
+
                 <h1 class="text-center">Student Application Form For Academic Year</h1>
                 <h2 class="text-center mb-4">
                     <t t-esc="year.name"/>
@@ -61,8 +68,8 @@
                                        required="1"/>
                                 <!--                    todo date Validation with age-->
                             </div>
-                            <div class="text-sm text-muted mx-2">Minimum age of 1 october
-                                <t t-esc="max_years"/>
+                            <div class="text-sm text-muted mx-2">Minimum age on 1 october
+                                <span> <t t-out="max_year"/></span>
                                 is 4 Years Old
                             </div>
 
@@ -104,7 +111,7 @@
                                 <div class="invalid-feedback">
                                     Detailed address is required, please enter the detailed address in Arabic.
                                 </div>
-                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -262,8 +269,11 @@
                         </div>
                     </div>
                     <div class="form-group  my-4">
-                    <input type="checkbox" class="form-check-input" id="confirm_data" name="confirm_data" required="1"/>
-                    <label class="form-check-label" for="confirm_data">I confirm that the data entered is accurate and correct </label>
+                        <input type="checkbox" class="form-check-input" id="confirm_data" name="confirm_data"
+                               required="1"/>
+                        <label class="form-check-label" for="confirm_data">I confirm that the data entered is accurate
+                            and correct
+                        </label>
                     </div>
                     <button type="submit" class="btn btn-primary mt-3">Next Page</button>
                     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -280,11 +290,19 @@
     <template id="parent_data" name="Parents' Data">
         <t t-call="website.layout">
             <div class="container mt-5 mb-5">
+                  <div class="container mt-5 mb-5">
+
+                <img src="/virgin_mary_school/static/description/logo.png" class="mx-auto" alt="Virgin Mary School Logo" style="max-width: 200px;"/>
+                <div class="text-center mb-3 mt-0">
+                    <h1 class="display-4">Welcome to Virgin Mary School</h1>
+<!--                    <p class="lead">Please fill out the student application form below to apply for the academic year.</p>-->
+                </div>
+                  </div>
                 <h1 class="text-center">Parents' Data</h1>
                 <form action="/thank_you" method="post"
                       class="form-control  form-card needs-validation"
                       novalidate="novalidate" id="form_request" enctype="multipart/form-data">
-                     <input type="hidden" name="national_id" t-att-value="national_id"/>
+                    <input type="hidden" name="national_id" t-att-value="national_id"/>
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                     <h2 class="text-start mb-4">
                         Father's / Guardian Info
@@ -440,7 +458,7 @@
                             </div>
                         </div>
 
-                         <div class="col-md-4">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="mother_parent_relation">Relation</label>
                                 <select class="form-control" id="mother_parent_relation" name="mother_parent_relation"
@@ -559,40 +577,41 @@
                         </div>
                     </div>
                     <t t-if="siblings">
-                    <h2>Siblings data</h2>
-                    <div class="row my-3">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Sibling Name</th>
-                                    <th>Sibling Grade</th>
-                                </tr>
-                            </thead>
-                            <tbody id="siblingsTableBody">
-                                <t t-foreach="siblings" t-as="s">
+                        <h2>Siblings data</h2>
+                        <div class="row my-3">
+                            <table class="table table-bordered">
+                                <thead>
                                     <tr>
-                                        <td>
-                                            <input type="text" t-attf-name="sibling_name_#{s}" t-attf-id="sibling_name_#{s}"
-                                                   class="form-control" required="1"/>
-                                        </td>
-
-                                        <td>
-                                            <select t-attf-name="sibling_grade_#{s}" t-attf-id="sibling_grade_#{s}"
-                                                    class="form-control" required="1">
-                                                <option value="">Select Grade</option>
-                                                <t t-foreach="parent_grades" t-as="grade">
-                                                    <option t-att-value="grade.id">
-                                                        <t t-esc="grade.name"/>
-                                                    </option>
-                                                </t>
-                                            </select>
-                                        </td>
+                                        <th>Sibling Name</th>
+                                        <th>Sibling Grade</th>
                                     </tr>
-                                </t>
-                                <!-- Sibling rows will be added here dynamically -->
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody id="siblingsTableBody">
+                                    <t t-foreach="siblings" t-as="s">
+                                        <tr>
+                                            <td>
+                                                <input type="text" t-attf-name="sibling_name_#{s}"
+                                                       t-attf-id="sibling_name_#{s}"
+                                                       class="form-control" required="1"/>
+                                            </td>
+
+                                            <td>
+                                                <select t-attf-name="sibling_grade_#{s}" t-attf-id="sibling_grade_#{s}"
+                                                        class="form-control" required="1">
+                                                    <option value="">Select Grade</option>
+                                                    <t t-foreach="parent_grades" t-as="grade">
+                                                        <option t-att-value="grade.id">
+                                                            <t t-esc="grade.name"/>
+                                                        </option>
+                                                    </t>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <!-- Sibling rows will be added here dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
                     </t>
 
 
@@ -605,8 +624,8 @@
                             <input type="file" class="form-control" id="father_id_front"
                                    name="father_id_front_docs" accept=".pdf,.jpg,.jpeg,.png"
 
-                              data-show-upload="true" data-show-caption="true" lass="file"
-                               data-show-preview="true"
+                                   data-show-upload="true" data-show-caption="true" lass="file"
+                                   data-show-preview="true"
                             />
 
                             <div class="form-text">Please upload the Copy of Father's National Id Front Side in PDF,
@@ -680,29 +699,30 @@
                         <t t-out="year.required_documents"/>
                     </div>
 
-                     <div class="form-group  my-4">
+                    <div class="form-group  my-4">
 
-                    <input type="checkbox" class="form-check-input" id="confirm_data" name="confirm_data" required="1"/>
-                    <label class="form-check-label" for="confirm_data">I confirm that  I undertake the Following </label>
+                        <input type="checkbox" class="form-check-input" id="confirm_data" name="confirm_data"
+                               required="1"/>
+                        <label class="form-check-label" for="confirm_data">I confirm that I undertake the Following
+                        </label>
                     </div>
                     <div class="row my-3 mx-3">
                         <t t-out="year.parent_undertaking"/>
                     </div>
 
 
-
-
-
-
                     <div class="form-group  my-4">
 
-                    <input type="checkbox" class="form-check-input" id="confirm_data" name="confirm_data" required="1"/>
-                    <label class="form-check-label" for="confirm_data">I confirm that the data entered is accurate and correct </label>
+                        <input type="checkbox" class="form-check-input" id="confirm_data" name="confirm_data"
+                               required="1"/>
+                        <label class="form-check-label" for="confirm_data">I confirm that the data entered is accurate
+                            and correct
+                        </label>
                     </div>
 
                     <button type="submit" class="btn btn-secondary mt-3">Submit Application</button>
 
-                 <script type="text/javascript"
+                    <script type="text/javascript"
                             src="/virgin_mary_school/static/src/js/website/student_application.js"></script>
                 </form>
             </div>
