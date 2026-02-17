@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, false);
     });
 });
-window.showDatePicker = function (dateInput) {
+window.showDatePickerChild = function (dateInput) {
 
     if (typeof flatpickr === 'undefined') {
         console.warn("Flatpickr not yet ready — retrying...");

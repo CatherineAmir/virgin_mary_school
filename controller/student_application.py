@@ -74,7 +74,7 @@ class StudentApplicationController(http.Controller):
                 "current_academic_year":current_academic_year.id,
 
             }
-                print("vals", vals)
+                _logger.info("vals before creation %s", vals)
                 try:
                     student_id=STudentObJ.create(vals)
                 except Exception as e:
