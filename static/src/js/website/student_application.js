@@ -106,7 +106,7 @@ function onchangeNameEnglish(input) {
 function onChangeNationalId(nationalIdInput) {
     const id_v = /^\d{14}$/;
     // console.log("onChangeNationalId");
-    let national_id = nationalIdInput.value.replaceAll(" ", "");
+    let national_id = nationalIdInput.value.replaceAll(" ", "").toString();
     const NationalIdInvalidDiv = document.getElementById("national_id_invalid_feedback");
 
     let nationality = document.getElementById("nationality")
@@ -126,11 +126,21 @@ function onChangeNationalId(nationalIdInput) {
 
 
         let searchStudents = searchID(national_id.replaceAll("-", '"').replaceAll("+", "").replaceAll(" ", "").replaceAll(/\bNone\b/g, 'null').replaceAll(/\bFalse\b/g, 'false').replaceAll(/[\s\-+]/g, ''), nationalIDArray);
+        console.log("searchStudents", searchStudents);
         if (searchStudents !== -1) {
+            console.log("National ID already exists in the system");
 
-            nationalIdInput.setCustomValidity("Your Mobile Is Registered before you can't fill a new form");
+            nationalIdInput.setCustomValidity("Your National Id Is Registered before you can't fill a new form");
             NationalIdInvalidDiv.textContent = "Your National Id Is Registered before you can't fill a new form";
 
+            // let button = document.getElementById("next_page_button");
+            // button.href="parent_detail/id/" + national_id.replaceAll(" ", "")
+            // button.classList.remove("d-none");
+            // button.classList.add("d-block");
+
+            alert("Your National Id Is Registered before you can't fill a new form, You will be redirected to the details page");
+            location="/parent_detail/id/" + national_id.replaceAll(" ", "")
+            return
 
         }
     }

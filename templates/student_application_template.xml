@@ -132,6 +132,9 @@
                                     start with 3.
                                 </div>
                             </div>
+
+
+
                             <!--                                todo national id validation-->
                             <!--                                todo load all national id-->
                         </div>
@@ -737,6 +740,19 @@
                 <p class="text-center">
                     <!--                    , Your Application has been Completed Successfully , we Will Get back To you Soon-->
                     application has been completed successfully. We will get back to you soon.
+                </p>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="application_duplicates" name="Application Thank You">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <h1 class="text-center">Your Application is Already Exist!</h1>
+                <p class="text-center">
+                    <!--                    , Your Application has been Completed Successfully , we Will Get back To you Soon-->
+                    our Application is Already Exist , You Can't refill it Again We will get back to you soon.
                 </p>
             </div>
         </t>

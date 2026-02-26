@@ -13,7 +13,7 @@ class VmStudent(models.Model):
 
     name_arabic = fields.Char()
     birth_date = fields.Date('Birth Date')
-    age_on_october = fields.Char('Age on October',compute='_compute_age_on_october')
+    age_on_october = fields.Char('Age on October',compute='_compute_age_on_october',store=True)
     place_of_birth = fields.Char(string="Place of Birth")
     national_id = fields.Char("Student National ID")
     nationality = fields.Many2one('res.country', 'Nationality')
@@ -22,9 +22,10 @@ class VmStudent(models.Model):
     number_of_sisters=fields.Integer('Number of Sisters')
     current_academic_year=fields.Many2one('vm.academic.year', 'Current Academic Year')
     date_required=fields.Date('Required for Application',related='current_academic_year.date_required_for_application')
-    age_year=fields.Integer('Age Year',compute='_compute_age_on_october',store=True,compute_sudo=True)
-    age_month=fields.Integer('Age Month',compute='_compute_age_on_october',store=True,compute_sudo=True)
-    age_day=fields.Integer('Age day',compute='_compute_age_on_october',store=True,compute_sudo=True)
+    age_year=fields.Integer('Age Year',compute='_compute_age_on_october',store=True,)
+    age_month=fields.Integer('Age Month',compute='_compute_age_on_october',store=True)
+    age_day=fields.Integer('Age day',compute='_compute_age_on_october',store=True)
+
 
 
     @api.depends('birth_date',"date_required")
@@ -47,7 +48,7 @@ class VmStudent(models.Model):
 
 
     stage_id = fields.Many2one('student.stages', string='Student Stage', default=_compute_stage_id,
-                               index=True, tracking=True, copy=False, ondelete='restrict', )
+                               index=True, tracking=True, copy=False, ondelete='restrict', group_expand="_read_group_stage_ids")
 
 
 
@@ -75,7 +76,7 @@ class VmStudent(models.Model):
     # Related to the stage record
     is_enrolled_student = fields.Boolean(related="stage_id.is_enrolled_student", store=True)
 
-    grade_id=fields.Many2one('vm.student.grade', 'Grade',required=True, ondelete="restrict")
+    grade_id=fields.Many2one('vm.student.grade', 'Grade',required=True, ondelete="restrict",group_expand="_read_group_grade_ids")
     parent_marital_status = fields.Selection([
         ("married","Married"),
         ("separated","Separated"),
@@ -86,12 +87,39 @@ class VmStudent(models.Model):
     legal_custodian=fields.Selection([("father","Father"),("mother","Mother"),("other","Other")],string="Legal Custodian",default='father')
 
 
-    parent_ids = fields.Many2many('vm.parent', string='Parent')
+    parent_ids = fields.Many2many('vm.parent', string='Parent',ondelete='restrict')
     previous_school_name=fields.Char('Previous School Name')
 
     _unique_national_id = models.Constraint('unique(national_id)',
                                   'National Id must be unique per student!')
     siblings_ids = fields.One2many('vm.siblings',"student_id", string='Siblings')
+
+    @api.model
+    def _read_group_grade_ids(self,grades,domain):
+        """
+               grade_ids is query item
+               < Query: 'SELECT "vm_student_grade"."id" FROM "vm_student_grade" ORDER BY "vm_student_grade"."id"  '
+               with params: [] >
+
+               grades.browse(grade_ids) vm.student.grade(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+               """
+        search_domain=[]
+
+        grade_ids=grades.sudo()._search(search_domain,order=grades._order)
+
+        return grades.browse(grade_ids)
+    @api.model
+    def _read_group_stage_ids(self, stages, domain):
+        # retrieve team_id from the context and write the domain
+        # - ('id', 'in', stages.ids): add columns that should be present
+        # - OR ('fold', '=', False): add default columns that are not folded
+        # - OR ('team_ids', '=', team_id), ('fold', '=', False) if team_id: add team columns that are not folded
+
+        search_domain=[]
+        # perform search
+        stage_ids = stages.sudo()._search(search_domain, order=stages._order)
+        return stages.browse(stage_ids)
+
     @api.model_create_multi
     def create(self, vals):
         res = super(VmStudent, self).create(vals)

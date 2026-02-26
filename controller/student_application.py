@@ -12,9 +12,10 @@ class StudentApplicationController(http.Controller):
 
     @http.route('/student-application', auth='public', website=True)
     def index(self, **kw):
-        print("in student_application")
+
         current_academic_year = request.env["vm.academic.year"].sudo().search([("admission_open", "=", True)], limit=1)
         if not current_academic_year:
+            _logger.info("No academic year found")
             return "No Academic Year Open for Application"
             # request.render("student_application.index", {})
         else:
@@ -23,9 +24,9 @@ class StudentApplicationController(http.Controller):
             company_id = request.env["res.company"].sudo().search([])
             nationalities = request.env["res.country"].sudo().search([])
             default_nationality = nationalities.filtered(lambda n: n.code == "EG")
-            all_national_ids = request.env['vm.student'].sudo().search_read(domain=[], fields=['national_id'], offset=0,
-                                                                            limit=None, order=None)
-            print("all_national_ids", all_national_ids)
+            all_national_ids = request.env['vm.student'].sudo().search(domain=[]).mapped("national_id")
+
+
         vals = {
             "grades": grades,
             "parent_relationships": parent_relationships,
@@ -36,22 +37,25 @@ class StudentApplicationController(http.Controller):
             "all_national_ids": all_national_ids,
             "max_year": current_academic_year.date_required_for_application.year,
         }
-        print("vals", vals)
+
         return request.render('virgin_mary_school.vm_student_application', vals)
 
     @http.route('/parent_detail/id/<string:national_id>', auth='public', website=True)
     def CreateStudent(self, **kw):
-        print("in student_application", kw)
+        _logger.info("in CreateStudent %s", kw)
+
         national_id = kw.get('national_id', False)
+
         if not national_id:
             # todo
             return "No National ID for Application"
         STudentObJ=request.env["vm.student"].sudo()
         existance_student = STudentObJ.search([("national_id", '=', national_id)], limit=1)
         current_academic_year = request.env["vm.academic.year"].sudo().search([("admission_open", "=", True)], limit=1)
-        print("existance_student",existance_student)
+
         if not existance_student:
             date_of_birth = kw.get('date_of_birth',False)
+            _logger.info("date_of_birth %s of national_id %s", date_of_birth,national_id)
             if date_of_birth:
             # "Create new Student"
                 vals = {
@@ -84,6 +88,7 @@ class StudentApplicationController(http.Controller):
                     return self.get_parent_data(kw,student_id,national_id)
 
             else:
+                _logger.error("No Birthday for Application of national id %s", national_id)
                 return request.redirect("/student-application")
 
 
@@ -92,7 +97,8 @@ class StudentApplicationController(http.Controller):
             return self.get_parent_data(kw, existance_student, national_id)
         else:
             # todo
-            return request.redirect("/thank_you")
+            return request.render("virgin_mary_school.application_duplicates")
+
 
 
 
@@ -129,7 +135,7 @@ class StudentApplicationController(http.Controller):
 
     @http.route('/thank_you',auth='public', website=True,methods=["GET","POST"])
     def thank_you(self,**kw):
-        print("Thank You",kw)
+        _logger.info("in thank_you %s", kw)
         national_id = kw.get("national_id", False)
         if not national_id:
             return request.redirect("/student-application")
@@ -238,19 +244,6 @@ class StudentApplicationController(http.Controller):
 
             attachment_ids=Attachments.create(files)
             print(attachment_ids)
-
-
-
-
-
-
-
-        #     todo siblings docs
-        # todo garedien level
-        # validation natioanl id function cause error
-        # email raise ValidationError(_('Validation error message'))
-        # invalid text (residence)
-
 
 
         return request.render("virgin_mary_school.application_thank_you")

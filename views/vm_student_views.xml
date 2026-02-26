@@ -1,6 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+
+        <record id="kanban_view_student" model="ir.ui.view">
+            <field name="name">Student Kanban</field>
+            <field name="model">vm.student</field>
+            <field name="arch" type="xml">
+                <kanban sample="1" class="o_kanban_mobile" >
+                    <field name="id"/>
+                    <field name="image_1920"/>
+                    <templates>
+                        <t t-name="card" class="flex-row">
+                            <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                           <aside class="o_kanban_aside_full">
+                                <t t-if="record.image_1920.value">
+                                    <div class="o_kanban_image_fill position-relative w-100">
+                                        <field name="image_1920" alt="Contact image" class="h-100" widget="image" options="{'img_class': 'object-fit-cover'}"/>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div class="o_kanban_image_fill position-relative w-100">
+                                        <field name="avatar_128" class="h-100" widget="image" options="{'img_class': 'object-fit-cover'}"/>
+                                    </div>
+                                </t>
+                            </aside>
+                            <main class="ml16 ps-2 ps-md-0">
+                                <div class="mb-1">
+                                    <field name="name" class="mb-0 fw-bold fs-5"/>
+                                </div>
+
+                                <div class="mb-1">
+                                    <field name="name_arabic" class="mb-0 fw-bold fs-5"/>
+                                </div>
+
+                                <div class="text-truncate">
+                                    <i class="fa fa-fw me-2 fa-home text-primary" title="grade_id" t-if="record.grade_id"/>
+                                    <field name="grade_id" class="text-truncate"/>
+                                </div>
+                                <div class="text-truncate">
+                                    <i class="fa fa-fw me-2 fa-calendar text-primary" title="birth_date" t-if="record.birth_date"/>
+                                    <field name="birth_date" class="text-truncate"/>
+                                </div>
+                                <div class="text-truncate">
+                                    <i class="fa fa-fw me-2 fa-user text-primary" title="Gender" t-if="record.gender"/>
+                                    <field name="gender" class="text-truncate"/>
+                                </div>
+<!--                                <footer class="py-0">-->
+<!--                                    <div class="d-flex ms-auto">-->
+<!--                                        <field name="activity_ids" widget="kanban_activity" class="m-2 ms-2"/>-->
+<!--                                    </div>-->
+<!--                                </footer>-->
+                            </main>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
         <!-- List (Tree) view -->
         <record id="view_vm_student_tree" model="ir.ui.view">
             <field name="name">vm_student.tree</field>
@@ -197,16 +254,16 @@
         <record id="action_vm_student" model="ir.actions.act_window">
             <field name="name">Students</field>
             <field name="res_model">vm.student</field>
-            <field name="view_mode">list,form</field>
-            <field name="view_id" ref="view_vm_student_tree"/>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="view_id" ref="kanban_view_student"/>
             <field name="domain">[("is_enrolled_student","=",True)]</field>
         </record>
 
         <record id="action_vm_application_student" model="ir.actions.act_window">
             <field name="name">Students Application</field>
             <field name="res_model">vm.student</field>
-            <field name="view_mode">list,form</field>
-            <field name="view_id" ref="view_vm_student_tree"/>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="view_id" ref="kanban_view_student"/>
             <field name="domain">[("is_enrolled_student","=",False)]</field>
         </record>
 
