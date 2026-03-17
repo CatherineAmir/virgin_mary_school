@@ -7,18 +7,18 @@
         <field name="arch" type="xml">
             <form string="Parent_view">
                 <sheet>
-                     <label string="Parent name" for="name"/>
-                        <h1>
-                            <field name="name" class="oe_title"/>
-                        </h1>
+                    <label string="Parent name" for="name"/>
+                    <h1>
+                        <field name="name" class="oe_title"/>
+                    </h1>
                     <group>
 
                         <group>
                             <field name="email"/>
-                             <field name="mobile"/>
+                            <field name="mobile"/>
                             <field name="national_id"/>
                         </group>
-                    <group>
+                        <group>
                             <field name="relationship_id"/>
                             <field name="address"/>
 
@@ -40,7 +40,7 @@
             </form>
         </field>
     </record>
-    
+
     <!-- List View -->
     <record id="parent_view_view_list" model="ir.ui.view">
         <field name="name">parent.view.view.list</field>
@@ -48,16 +48,15 @@
         <field name="arch" type="xml">
             <list string="Parent_view">
                 <field name="name"/>
-                <field name="email"/>
+                <field name="mobile"  widget="phone"/>
                 <field name="relationship_id"/>
-                <field name="mobile"/>
 
 
                 <!-- Add your fields here -->
             </list>
         </field>
     </record>
-    
+
     <!-- Action -->
     <record id="parent_view_action" model="ir.actions.act_window">
         <field name="name">Parent view</field>
@@ -65,7 +64,7 @@
         <field name="view_mode">list,form</field>
 
     </record>
-    
+
     <!-- Menu -->
 
 </odoo>

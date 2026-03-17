@@ -6,21 +6,23 @@
             <field name="name">Student Kanban</field>
             <field name="model">vm.student</field>
             <field name="arch" type="xml">
-                <kanban sample="1" class="o_kanban_mobile" >
+                <kanban sample="1" class="o_kanban_mobile">
                     <field name="id"/>
                     <field name="image_1920"/>
                     <templates>
                         <t t-name="card" class="flex-row">
                             <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
-                           <aside class="o_kanban_aside_full">
+                            <aside class="o_kanban_aside_full">
                                 <t t-if="record.image_1920.value">
                                     <div class="o_kanban_image_fill position-relative w-100">
-                                        <field name="image_1920" alt="Contact image" class="h-100" widget="image" options="{'img_class': 'object-fit-cover'}"/>
+                                        <field name="image_1920" alt="Contact image" class="h-100" widget="image"
+                                               options="{'img_class': 'object-fit-cover'}"/>
                                     </div>
                                 </t>
                                 <t t-else="">
                                     <div class="o_kanban_image_fill position-relative w-100">
-                                        <field name="avatar_128" class="h-100" widget="image" options="{'img_class': 'object-fit-cover'}"/>
+                                        <field name="avatar_128" class="h-100" widget="image"
+                                               options="{'img_class': 'object-fit-cover'}"/>
                                     </div>
                                 </t>
                             </aside>
@@ -34,22 +36,24 @@
                                 </div>
 
                                 <div class="text-truncate">
-                                    <i class="fa fa-fw me-2 fa-home text-primary" title="grade_id" t-if="record.grade_id"/>
+                                    <i class="fa fa-fw me-2 fa-home text-primary" title="grade_id"
+                                       t-if="record.grade_id"/>
                                     <field name="grade_id" class="text-truncate"/>
                                 </div>
                                 <div class="text-truncate">
-                                    <i class="fa fa-fw me-2 fa-calendar text-primary" title="birth_date" t-if="record.birth_date"/>
+                                    <i class="fa fa-fw me-2 fa-calendar text-primary" title="birth_date"
+                                       t-if="record.birth_date"/>
                                     <field name="birth_date" class="text-truncate"/>
                                 </div>
                                 <div class="text-truncate">
                                     <i class="fa fa-fw me-2 fa-user text-primary" title="Gender" t-if="record.gender"/>
                                     <field name="gender" class="text-truncate"/>
                                 </div>
-<!--                                <footer class="py-0">-->
-<!--                                    <div class="d-flex ms-auto">-->
-<!--                                        <field name="activity_ids" widget="kanban_activity" class="m-2 ms-2"/>-->
-<!--                                    </div>-->
-<!--                                </footer>-->
+                                <!--                                <footer class="py-0">-->
+                                <!--                                    <div class="d-flex ms-auto">-->
+                                <!--                                        <field name="activity_ids" widget="kanban_activity" class="m-2 ms-2"/>-->
+                                <!--                                    </div>-->
+                                <!--                                </footer>-->
                             </main>
                         </t>
                     </templates>
@@ -100,8 +104,8 @@
                                 </div>
                             </button>
                         </div>
-                        <field name="stage_id" invisible="is_enrolled_student" widget="statusbar"/>
-                        <field name="grade_id" invisible="not is_enrolled_student" widget="statusbar"/>
+                        <field name="stage_id" invisible="is_enrolled_student" widget="statusbar" options="{'clickable': '1'}"/>
+                        <field name="grade_id" invisible="not is_enrolled_student" widget="statusbar" options="{'clickable': '1'}"/>
 
                         <field name="active" invisible="1"/>
                         <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
@@ -125,31 +129,6 @@
                             </div>
 
                         </group>
-
-
-                        <!--                         <div class="row flex-column flex-sm-row align-items-center">-->
-
-                        <!--                            <div class="align-self-start o_employee_form_header_info">-->
-                        <!--&lt;!&ndash;                                <div class="oe_title ps-0 pe-2 mw-100">&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                    <h5 class="d-flex align-items-baseline mb-0">&ndash;&gt;-->
-                        <!--&lt;!&ndash;&lt;!&ndash;                                        <field name="title" options="{'no_create': True}" placeholder="Title"/>&ndash;&gt;&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                    </h5>&ndash;&gt;-->
-
-                        <!--&lt;!&ndash;                                    <div class="d-flex align-items-baseline w-md-50">&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                        <i class="fa fa-fw me-1 fa-envelope text-primary" title="Email"/>&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                        <field name="email" class="w-100" widget="email" placeholder="Email"/>&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                    </div>&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                    <div class="d-flex align-items-baseline w-md-50">&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                        <i class="fa fa-fw me-1 fa-phone text-primary" title="Phone"/>&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                        <field name="phone" class="w-100" widget="phone" placeholder="Phone"/>&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                    </div>&ndash;&gt;-->
-
-                        <!--&lt;!&ndash;                                </div>&ndash;&gt;-->
-                        <!--                            </div>-->
-                        <!--                        </div>-->
-                        <!--                        <br/>-->
-
-
                         <group>
                             <group>
                                 <field name="place_of_birth"/>
@@ -193,6 +172,17 @@
                                     <field name="user_id"/>
                                 </group>
                             </page>
+                            <page string="Parents" name="parents">
+                                <group>
+                                    <field name="parent_ids" readonly="1">
+                                        <list string="Parents" create="false" edit="true" delete="false">
+                                            <field name="name"/>
+                                            <field name="mobile"  widget="phone"/>
+                                            <field name="relationship_id"/>
+                                        </list>
+                                    </field>
+                                </group>
+                            </page>
                             <page string="Address &amp; Notes">
                                 <group>
                                     <field name="parent_marital_status"/>
@@ -231,6 +221,8 @@
             <field name="arch" type="xml">
                 <search string="Students">
                     <field name="name"/>
+                    <field name="name_arabic"/>
+
                     <field name="national_id"/>
                     <field name="stage_id"/>
                     <field name="nationality"/>
@@ -242,13 +234,47 @@
                     <separator/>
 
                     <filter name="group_by_stage" string="Stage" domain="[]" context="{'group_by':'stage_id'}"/>
-                    <filter  name="group_by_nationality" string="Nationality" domain="[]" context="{'group_by':'nationality'}"/>
+                    <filter name="group_by_nationality" string="Nationality" domain="[]"
+                            context="{'group_by':'nationality'}"/>
                     <filter name="group_by_gender" string="Gender" domain="[]" context="{'group_by':'gender'}"/>
                     <filter name="group_grade_id" context="{'group_by':'grade_id'}" string="Grade"/>
+                    <filter name="group_national_id" context="{'group_by':'national_id'}" string="National ID"/>
 
                 </search>
             </field>
         </record>
+        <!--        Activity-->
+        <!--         <record id="vm_student_view_activity" model="ir.ui.view">-->
+        <!--            <field name="name">student_activity.activity</field>-->
+        <!--            <field name="model">vm.student</field>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <activity string="Student Activities" create="false" edit="false" delete="false">-->
+        <!--                    <field name="user_id"/>-->
+        <!--&lt;!&ndash;                    <field name="company_currency"/>&ndash;&gt;-->
+        <!--                    <templates>-->
+        <!--                        <div t-name="activity-box">-->
+        <!--                            <field name="user_id" widget="many2one_avatar_user" domain="[('share', '=', False)]"/>-->
+        <!--                            <div class="flex-grow-1">-->
+        <!--                                <div class="d-flex justify-content-between">-->
+        <!--                                    <field name="name" display="full" class="o_text_block o_text_bold"/>-->
+        <!--                                    <div class="m-1"/>-->
+        <!--&lt;!&ndash;                                    <field name="expected_revenue" widget='monetary' display="full" muted="1"/>&ndash;&gt;-->
+        <!--                                </div>-->
+        <!--                                <div class="d-flex justify-content-between">-->
+        <!--                                    <field name="name_arabic" muted="1" display="full" class="o_text_block"/>-->
+        <!--                                    <field name="grade_id" widget="badge" />-->
+        <!--&lt;!&ndash;                                    <div class="m-1"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;                                    <field name="stage_id_color" invisible="1"/>&ndash;&gt;-->
+        <!--                                    <field name="stage_id" widget="badge" />-->
+
+        <!--&lt;!&ndash;                                           options="{'color_field': 'stage_id_color'}"/>&ndash;&gt;-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </templates>-->
+        <!--                </activity>-->
+        <!--            </field>-->
+        <!--        </record>-->
 
         <!-- Action and Menu -->
         <record id="action_vm_student" model="ir.actions.act_window">

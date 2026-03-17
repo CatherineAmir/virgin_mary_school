@@ -76,7 +76,7 @@ class VmStudent(models.Model):
     # Related to the stage record
     is_enrolled_student = fields.Boolean(related="stage_id.is_enrolled_student", store=True)
 
-    grade_id=fields.Many2one('vm.student.grade', 'Grade',required=True, ondelete="restrict",group_expand="_read_group_grade_ids")
+    grade_id=fields.Many2one('vm.student.grade', 'Grade',required=True, ondelete="restrict",group_expand="_read_group_grade_ids",tracking=True)
     parent_marital_status = fields.Selection([
         ("married","Married"),
         ("separated","Separated"),
