@@ -26,7 +26,12 @@ class VmStudent(models.Model):
     age_month=fields.Integer('Age Month',compute='_compute_age_on_october',store=True)
     age_day=fields.Integer('Age day',compute='_compute_age_on_october',store=True)
 
-
+    def _get_report_filename(self):
+        """Return student name as the PDF filename."""
+        # self.ensure_one()
+        if len(self)>1:
+            return "student Applications"
+        return self.name
 
     @api.depends('birth_date',"date_required")
     def _compute_age_on_october(self):

@@ -25,8 +25,8 @@
         "templates/student_application_template.xml",
 
         "views/menus.xml",
-
-    ],
+		'reports/application_report.xml',
+],
 
 'assets': {
         'web.assets_frontend': [
