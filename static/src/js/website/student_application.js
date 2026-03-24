@@ -23,9 +23,17 @@ window.showDatePickerChild = function (dateInput) {
     console.log("maxYear", maxYear);
     let input = document.getElementById("date_of_birth");
     console.log("input", input)
-    maxDate=new Date(new Date(maxYear,9,1).setFullYear(new Date().getFullYear() - 4)),
+    const baseDate = new Date(maxYear, 9, 1); // Oct 1, 2026
+    // check
+    // maxDate=new Date(new Date(maxYear,9,1).setFullYear(new Date().getFullYear() - 4)),
+    // maxDate = new Date(new Date(maxYear, 9, 1).setFullYear(new Date(getFullYear() - 3, 6, 0))),
+    const maxDate = new Date(
+        baseDate.getFullYear() - 3,   // 2026 - 3 = 2023
+        baseDate.getMonth() - 6,      // 9 (Oct) - 6 = 3 (April) ❌ not Feb
+        1
+    );
     console.log("maxDate", maxDate)
-        flatpickr(dateInput, {
+    flatpickr(dateInput, {
 
         dateFormat: "d/m/Y",
         maxDate: maxDate,
@@ -45,7 +53,6 @@ window.showDatePickerChild = function (dateInput) {
     }).open()
 
 }
-
 
 
 function onchangeNameArabic(input) {
@@ -118,7 +125,7 @@ function onChangeNationalId(nationalIdInput) {
     console.log("nationality", nationality);
     const nationalIdArray = document.querySelector("#national_id").getAttribute("data");
     console.log("nationalIDArray", nationalIdArray);
-    if(nationalIdArray) {
+    if (nationalIdArray) {
 
         let nationalIDArray = JSON.parse(nationalIdArray.replaceAll("'", '"').replaceAll("None", "")
             .replaceAll("+", "").replaceAll(" ", "").replaceAll("-", "").replaceAll(/\bNone\b/g, 'null').replaceAll(/\bFalse\b/g, 'false').replaceAll(/[\s\-+]/g, ''));
@@ -139,7 +146,7 @@ function onChangeNationalId(nationalIdInput) {
             // button.classList.add("d-block");
 
             alert("Your National Id Is Registered before you can't fill a new form, You will be redirected to the details page");
-            location="/parent_detail/id/" + national_id.replaceAll(" ", "")
+            location = "/parent_detail/id/" + national_id.replaceAll(" ", "")
             return
 
         }
@@ -165,7 +172,7 @@ function onChangeNationalId(nationalIdInput) {
 
 
     }
-    console.log("national_id",national_id)
+    console.log("national_id", national_id)
     $('form').attr('action', '/parent_detail/id/' + national_id.replaceAll(" ", ""));
     nationalIdInput.closest('form').classList.add('was-validated');
 }
@@ -235,8 +242,6 @@ function onChangeNationalIdFather(nationalIdInput) {
     }
 
 
-
-
     if (nationality && nationality === (65).toString()) {
 
         if (!((national_id.match(id_v)) && (national_id.startsWith("3") || national_id.startsWith("2")))) {
@@ -269,8 +274,6 @@ function onChangeNationalIdMother(nationalIdInput) {
     if (nationality) {
         nationality = nationality.value
     }
-
-
 
 
     if (nationality && nationality === (65).toString()) {

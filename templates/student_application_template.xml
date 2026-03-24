@@ -70,7 +70,7 @@
                             </div>
                             <div class="text-sm text-muted mx-2">Minimum age on 1 october
                                 <span> <t t-out="max_year"/></span>
-                                is 4 Years Old
+                                is 3.5 Years Old
                             </div>
 
                         </div>
