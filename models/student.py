@@ -56,7 +56,7 @@ class VmStudent(models.Model):
                                index=True, tracking=True, copy=False, ondelete='restrict', group_expand="_read_group_stage_ids")
 
 
-
+    stage_state=fields.Selection(related="stage_id.state", string="Stage State",store=True)
     gender = fields.Selection([
         ('male', 'Male'),
         ('female', 'Female'),
@@ -99,6 +99,44 @@ class VmStudent(models.Model):
                                   'National Id must be unique per student!')
     siblings_ids = fields.One2many('vm.siblings',"student_id", string='Siblings')
 
+
+    def accept(self):
+        stage_id=self.env['student.stages'].search([("is_enrolled_student","=",True)], order="sequence,id", limit=1)
+        if stage_id:
+            self.stage_id=stage_id.id
+
+    def reject(self):
+        stage_id=self.env['student.stages'].search([("state","=","rejection")], order="sequence,id", limit=1)
+        if stage_id:
+            self.stage_id=stage_id.id
+            self.active=False
+    def interview(self):
+        if self.stage_state=='interview':
+            stage_id=self.env['student.stages'].search([("state","=","interview"),("id","!=",self.stage_id.id)], order="sequence,id", limit=1)
+        else:
+            stage_id = self.env['student.stages'].search([("state", "=", "interview")],
+                                                         order="sequence,id", limit=1)
+        if stage_id:
+            self.stage_id=stage_id.id
+
+
+    def reset_to_new(self):
+        stage_id=self.env['student.stages'].search([("state","=","new")], order="sequence,id", limit=1)
+        if stage_id:
+            self.stage_id=stage_id.id
+            self.active=True
+
+
+
+
+
+
+
+
+
+
+
+
     @api.model
     def _read_group_grade_ids(self,grades,domain):
         """
@@ -108,7 +146,7 @@ class VmStudent(models.Model):
 
                grades.browse(grade_ids) vm.student.grade(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
                """
-        search_domain=[]
+        search_domain=[("is_parent","=",False)]
 
         grade_ids=grades.sudo()._search(search_domain,order=grades._order)
 
