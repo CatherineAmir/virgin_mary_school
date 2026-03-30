@@ -21,6 +21,7 @@
                         <group>
                             <field name="relationship_id"/>
                             <field name="address"/>
+                            <field name="job"/>
 
 
                         </group>
@@ -50,6 +51,7 @@
                 <field name="name"/>
                 <field name="mobile"  widget="phone"/>
                 <field name="relationship_id"/>
+                <field name="job"/>
 
 
                 <!-- Add your fields here -->

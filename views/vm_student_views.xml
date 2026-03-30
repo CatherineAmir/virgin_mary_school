@@ -191,6 +191,7 @@
                                             <field name="name"/>
                                             <field name="mobile" widget="phone"/>
                                             <field name="relationship_id"/>
+                                            <field name="job"/>
                                         </list>
                                     </field>
                                 </group>
