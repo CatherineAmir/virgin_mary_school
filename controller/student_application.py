@@ -25,7 +25,7 @@ class StudentApplicationController(http.Controller):
             nationalities = request.env["res.country"].sudo().search([])
             default_nationality = nationalities.filtered(lambda n: n.code == "EG")
             all_national_ids = request.env['vm.student'].sudo().search(domain=[]).mapped("national_id")
-
+            parent_relation = request.env['vm.parent.relationship'].sudo().search([])
 
         vals = {
             "grades": grades,
@@ -36,6 +36,9 @@ class StudentApplicationController(http.Controller):
             "default_nationality": default_nationality,
             "all_national_ids": all_national_ids,
             "max_year": current_academic_year.date_required_for_application.year,
+            "parent_relation": parent_relation,
+            "father_default": 1,
+            "mother_default": 2,
         }
 
         return request.render('virgin_mary_school.vm_student_application', vals)
@@ -84,8 +87,53 @@ class StudentApplicationController(http.Controller):
                 except Exception as e:
                     _logger.error(f"Application Error for National ID: {national_id} Error is {e}")
 
+                vals = [
+                    {
+                        "name": kw.get("father_name", ""),
+                        "country_id": int(kw.get("father_nationality", 0)),
+                        "national_id": kw.get("national_id_father", 0),
+                        "mobile": kw.get("father_phone", ""),
+                        "email": kw.get("father_email", ""),
+                        "address": kw.get("father_address", ""),
+                        "job": kw.get("father_job", ""),
+                        "education": kw.get("father_education", ""),
+                        "relationship_id": int(kw.get("father_parent_relation", 1)),
+                        "student_ids": [(6, 0, [student_id.id])]
+
+                    },
+                    {
+                        "name": kw.get("mother_name", ""),
+                        "country_id": int(kw.get("mother_nationality", 0)),
+                        "national_id": kw.get("mother_national_id", 0),
+                        "mobile": kw.get("mother_phone", ""),
+                        "email": kw.get("mother_email", ""),
+                        "address": kw.get("mother_address", ""),
+                        "job": kw.get("mother_job", ""),
+                        "education": kw.get("mother_education", ""),
+                        "relationship_id": int(kw.get("mother_parent_relation", 2)),
+                        "student_ids": [(6, 0, [student_id.id])]
+
+                    }
+
+                ]
+            # print("vals",vals)
+                try:
+                    parents = request.env['vm.parent'].sudo().create(vals)
+                    # print("parents",parents)
+                    father = parents[0]
+                    mother = parents[1]
+                except Exception as e:
+                    _logger.error(f"Can't Creat Parent for: {national_id} Error is {e}")
+
                 else:
-                    return self.get_parent_data(kw,student_id,national_id)
+                    if parents:
+                        parents_exist=True
+                    else:
+                        parents_exist=False
+                    return self.get_parent_data(kw,student_id,national_id,parents=parents_exist)
+
+                _logger.error("No Birthday for Application of national id %s", national_id)
+                return request.redirect("/student-application")
 
             else:
                 _logger.error("No Birthday for Application of national id %s", national_id)
@@ -94,7 +142,7 @@ class StudentApplicationController(http.Controller):
 
 
         elif not existance_student.parent_ids:
-            return self.get_parent_data(kw, existance_student, national_id)
+            return self.get_parent_data(kw, existance_student, national_id, parents=False)
         else:
             # todo
             return request.render("virgin_mary_school.application_duplicates")
@@ -106,7 +154,7 @@ class StudentApplicationController(http.Controller):
 
 
 
-    def get_parent_data(self,kw,student_id,national_id):
+    def get_parent_data(self,kw,student_id,national_id,parents=False):
 
         parent_grades = request.env['vm.student.grade'].sudo().search([("is_parent", "=", True)])
         nationalities = request.env["res.country"].sudo().search([])
@@ -129,6 +177,8 @@ class StudentApplicationController(http.Controller):
             "parent_relation":parent_relation,
             "father_default":1,
             "mother_default":2,
+            'parents':parents,
+
         }
 
         return request.render("virgin_mary_school.parent_data", vals)
@@ -144,106 +194,110 @@ class StudentApplicationController(http.Controller):
             student_id=request.env['vm.student'].sudo().search([("national_id", "=", national_id)],limit=1)
             if not student_id:
                 return request.redirect("/student-application")
+        parents=kw.get("parents",True)
 
+        if not parents:
+            vals=[
+                {
+                "name":kw.get("father_name",""),
+                "country_id":int(kw.get("father_nationality",56)),
+                "national_id":kw.get("national_id_father",0),
+                "mobile":kw.get("father_phone",""),
+                "email":kw.get("father_email",""),
+                "address":kw.get("father_address",""),
+                "job":kw.get("father_job",""),
+                "education":kw.get("father_education",""),
+                "relationship_id":int(kw.get("father_parent_relation",1)),
+                "student_ids": [(6, 0, [student_id.id])]
 
-        vals=[
-            {
-            "name":kw.get("father_name",""),
-            "country_id":int(kw.get("father_nationality",0)),
-            "national_id":kw.get("national_id_father",0),
-            "mobile":kw.get("father_phone",""),
-            "email":kw.get("father_email",""),
-            "address":kw.get("father_address",""),
-            "job":kw.get("father_job",""),
-            "education":kw.get("father_education",""),
-            "relationship_id":int(kw.get("father_parent_relation",1)),
-            "student_ids": [(6, 0, [student_id.id])]
+            },
+                {
+                "name": kw.get("mother_name", ""),
+                "country_id": int(kw.get("mother_nationality", 0)),
+                "national_id": kw.get("mother_national_id", 0),
+                "mobile": kw.get("mother_phone", ""),
+                "email": kw.get("mother_email", ""),
+                "address": kw.get("mother_address", ""),
+                "job": kw.get("mother_job", ""),
+                "education": kw.get("mother_education", ""),
+                "relationship_id": int(kw.get("mother_parent_relation",2)),
+                "student_ids":[(6,0,[student_id.id])]
 
-        },
-            {
-            "name": kw.get("mother_name", ""),
-            "country_id": int(kw.get("mother_nationality", 0)),
-            "national_id": kw.get("mother_national_id", 0),
-            "mobile": kw.get("mother_phone", ""),
-            "email": kw.get("mother_email", ""),
-            "address": kw.get("mother_address", ""),
-            "job": kw.get("mother_job", ""),
-            "education": kw.get("mother_education", ""),
-            "relationship_id": int(kw.get("mother_parent_relation",2)),
-            "student_ids":[(6,0,[student_id.id])]
+            }
 
-        }
-
-        ]
+    ]
         # print("vals",vals)
-        try:
-            parents=request.env['vm.parent'].sudo().create(vals)
-            # print("parents",parents)
-            father=parents[0]
-            mother=parents[1]
-        except Exception as e:
-            _logger.error(f"Student with national id: {national_id} Error is {e} in parent Form")
+            try:
+                parents=request.env['vm.parent'].sudo().create(vals)
+                # print("parents",parents)
+                father=parents[0]
+                mother=parents[1]
+            except Exception as e:
+                _logger.error(f"Student with national id: {national_id} Error is {e} in parent Form")
 
-        else:
-            siblings=[key for key,value in kw.items() if key.startswith("sibling")]
-            sibling_data=[]
-            total_siblings=int(len(siblings)/2)
-            for s in range(0,total_siblings):
-                sibling_data.append({
-                    "name":kw.get(f"sibling_name_{s}",""),
-                    "grade_id":int(kw.get(f"sibling_grade_{s}",0)),
-                    "student_id":student_id.id,
-                })
+        # else:
+        siblings=[key for key,value in kw.items() if key.startswith("sibling")]
+        sibling_data=[]
+        total_siblings=int(len(siblings)/2)
+        for s in range(0,total_siblings):
+            sibling_data.append({
+                "name":kw.get(f"sibling_name_{s}",""),
+                "grade_id":int(kw.get(f"sibling_grade_{s}",0)),
+                "student_id":student_id.id,
+            })
 
 
-            request.env['vm.siblings'].sudo().create(sibling_data)
+        request.env['vm.siblings'].sudo().create(sibling_data)
 
-            Attachments = request.env['ir.attachment'].sudo()
-            files=[]
-            docs=[key  for key,value in kw.items() if key.endswith('_docs')]
-            if len(docs):
-                for doc in docs:
-                    name = kw.get(doc).filename
-                    file = kw.get(doc)
+        Attachments = request.env['ir.attachment'].sudo()
+        files=[]
+        docs=[key  for key,value in kw.items() if key.endswith('_docs')]
+        parents=student_id.parent_ids
+        father = parents[0]
+        mother = parents[1]
+        if len(docs):
+            for doc in docs:
+                name = kw.get(doc).filename
+                file = kw.get(doc)
 
-                    if 'father' in doc:
+                if 'father' in doc:
 
-                        files.append({
-                            'name': name,
-                            'res_name': name,
-                            'type': 'binary',
-                            'res_model': "vm.parent",
-                            'res_id': father.id ,
-                            'datas': pybase64.b64encode(file.read()),
+                    files.append({
+                        'name': name,
+                        'res_name': name,
+                        'type': 'binary',
+                        'res_model': "vm.parent",
+                        'res_id': father.id ,
+                        'datas': pybase64.b64encode(file.read()),
 
-                        })
-                    elif 'mother' in doc:
-                        files.append({
-                            'name': name,
-                            'res_name': name,
-                            'type': 'binary',
-                            'res_model': "vm.parent",
-                            'res_id': mother.id,
-                            'datas': pybase64.b64encode(file.read()),
+                    })
+                elif 'mother' in doc:
+                    files.append({
+                        'name': name,
+                        'res_name': name,
+                        'type': 'binary',
+                        'res_model': "vm.parent",
+                        'res_id': mother.id,
+                        'datas': pybase64.b64encode(file.read()),
 
-                        })
+                    })
+                else:
+                    if "image" in doc:
+                        student_id.image_1920 = pybase64.b64encode(file.read())
                     else:
-                        if "image" in doc:
-                            student_id.image_1920 = pybase64.b64encode(file.read())
-                        else:
-                            files.append({
-                                'name': name,
-                                'res_name': name,
-                                'type': 'binary',
-                                'res_model': "vm.student",
-                                'res_id': student_id.id,
-                                'datas': pybase64.b64encode(file.read()),
+                        files.append({
+                            'name': name,
+                            'res_name': name,
+                            'type': 'binary',
+                            'res_model': "vm.student",
+                            'res_id': student_id.id,
+                            'datas': pybase64.b64encode(file.read()),
 
-                            })
+                        })
 
 
-            attachment_ids=Attachments.create(files)
-            print(attachment_ids)
+        attachment_ids=Attachments.create(files)
+        print(attachment_ids)
 
 
         return request.render("virgin_mary_school.application_thank_you")
