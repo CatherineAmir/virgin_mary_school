@@ -24,7 +24,7 @@ class StudentApplicationController(http.Controller):
             company_id = request.env["res.company"].sudo().search([])
             nationalities = request.env["res.country"].sudo().search([])
             default_nationality = nationalities.filtered(lambda n: n.code == "EG")
-            all_national_ids = request.env['vm.student'].sudo().search(domain=[]).mapped("national_id")
+            all_national_ids = request.env['vm.student'].sudo().search(domain=['|',("active","=",True),('active','=',False)]).mapped("national_id")
             parent_relation = request.env['vm.parent.relationship'].sudo().search([])
 
         vals = {
@@ -53,7 +53,7 @@ class StudentApplicationController(http.Controller):
             # todo
             return "No National ID for Application"
         STudentObJ=request.env["vm.student"].sudo()
-        existance_student = STudentObJ.search([("national_id", '=', national_id)], limit=1)
+        existance_student = STudentObJ.with_context(active_test=False).search([("national_id", '=', national_id)], limit=1)
         current_academic_year = request.env["vm.academic.year"].sudo().search([("admission_open", "=", True)], limit=1)
 
         if not existance_student:

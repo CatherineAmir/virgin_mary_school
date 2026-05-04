@@ -146,7 +146,7 @@ function onChangeNationalId(nationalIdInput) {
             // button.classList.add("d-block");
 
             alert("Your National Id Is Registered before you can't fill a new form, You will be redirected to the details page");
-            location = "/parent_detail/id/" + national_id.replaceAll(" ", "")
+            window.location.href = "/parent_detail/id/" + national_id.replaceAll(" ", "")
             return
 
         }

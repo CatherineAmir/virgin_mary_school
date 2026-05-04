@@ -76,7 +76,7 @@ class VmStudent(models.Model):
     partner_id = fields.Many2one('res.partner', 'Partner',
                                  required=True, ondelete="cascade", delegate=True)
     user_id = fields.Many2one('res.users', 'User', ondelete="cascade")
-    active = fields.Boolean(default=True)
+    active = fields.Boolean(default=True,tracking=True)
 
     # Related to the stage record
     is_enrolled_student = fields.Boolean(related="stage_id.is_enrolled_student", store=True)
